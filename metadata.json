@@ -1,0 +1,6 @@
+{
+  "name": "Brain Trap",
+  "description": "Brain Trap is a mind-bending interactive trick question puzzle game with 150 levels divided into three challenging stages of math, ui, coding, and logical traps.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
