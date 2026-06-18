@@ -70,9 +70,9 @@ class GamePreferences(context: Context) {
         prefs.edit().putBoolean("sound_enabled", enabled).apply()
     }
 
-    fun getLanguage(): String = "en" // "bn" or "en"
+    fun getLanguage(): String = prefs.getString("language_code", "bn") ?: "bn"
     fun setLanguage(lang: String) {
-        prefs.edit().putString("language_code", "en").apply()
+        prefs.edit().putString("language_code", lang).apply()
     }
 
     // Power upside wallet representation
@@ -444,11 +444,7 @@ object QuestionManager {
         // Try mapping to curated list first
         val curated = curatedQuestions.find { it.level == level }
         if (curated != null) {
-            return curated.copy(
-                questionBn = curated.questionEn,
-                optionsBn = curated.optionsEn,
-                explanationBn = curated.explanationEn
-            )
+            return curated
         }
 
         // Deterministic template configuration to prevent repetitions
@@ -1048,34 +1044,23 @@ class GameViewModel(private val context: Context) : ViewModel() {
 
     // Restart/Retry Level
     fun retryLevel() {
-        // If lives = 0, warn them that they must claim energy through simulated Ad
         if (prefs.getLives() <= 0) {
-            // Trigger auto Ad display popup to aid them
-            _uiState.update {
-                it.copy(showSimulatedAdOffer = true)
-            }
-        } else {
-            loadLevel(_uiState.value.currentLevelNumber)
-        }
-    }
-
-    // Simulated Ad Play (UNITY_GAME_ID simulator) - keeps 100% functional, no deadlocks
-    fun startCampaignAd(onCompleted: () -> Unit) {
-        viewModelScope.launch {
+            prefs.setLives(3)
             _uiState.update {
                 it.copy(
-                    isAdPlaying = true,
-                    adCountdown = 5
+                    lives = 3,
+                    showSimulatedAdOffer = false,
+                    coins = prefs.getCoins(),
+                    showToastMsg = if (language.value == "bn") "আপনার লাইফ ফ্রি রিফিল করা হয়েছে!" else "Free Lives Auto-Refilled!"
                 )
             }
-            while (_uiState.value.adCountdown > 0) {
-                delay(1000)
-                _uiState.update { it.copy(adCountdown = it.adCountdown - 1) }
-            }
-            // Reward!
-            _uiState.update { it.copy(isAdPlaying = false) }
-            onCompleted()
         }
+        loadLevel(_uiState.value.currentLevelNumber)
+    }
+
+    // Simulated Ad Play (UNITY_GAME_ID simulator) - fully bypassed for clean 100% free experience
+    fun startCampaignAd(onCompleted: () -> Unit) {
+        onCompleted()
     }
 
     private fun findActivity(ctx: Context): android.app.Activity? {

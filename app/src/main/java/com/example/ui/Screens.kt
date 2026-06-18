@@ -2885,7 +2885,11 @@ fun AdPlayerScreen(
             Spacer(modifier = Modifier.height(40.dp))
 
             Text(
-                text = if (languageCode == "bn") "ভিডিও প্রস্তুত করা হচ্ছে..." else "Preparing sponsored stream...",
+                text = if (gameState.adCountdown > 0) {
+                    if (languageCode == "bn") "বিজ্ঞাপন শেষ হতে ${gameState.adCountdown} সেকেন্ড বাকি" else "Ad ends in ${gameState.adCountdown} seconds"
+                } else {
+                    if (languageCode == "bn") "ভিডিও প্রস্তুত করা হচ্ছে..." else "Preparing sponsored stream..."
+                },
                 fontSize = 17.sp,
                 color = Color.Black,
                 fontWeight = FontWeight.Black
