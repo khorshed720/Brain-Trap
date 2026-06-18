@@ -129,304 +129,302 @@ object QuestionManager {
     private val curatedQuestions = listOf(
         Question(
             id = 1, stage = 1, level = 1,
-            questionBn = "What is a baby cat called?",
+            questionBn = "বিড়ালের বাচ্চাকে ইংরেজিতে কী বলা হয়?",
             questionEn = "What is a baby cat called?",
             type = "trick",
-            optionsBn = listOf("DOG", "KIT", "CALF", "MITTY"),
+            optionsBn = listOf("DOG (কুকুর)", "KIT (কিট)", "CALF (বাছুর)", "MITTY (মিটি)"),
             optionsEn = listOf("DOG", "KIT", "CALF", "MITTY"),
             correctIndex = 1,
             isTrick = true,
-            explanationBn = "KIT is correct, but MITTY sounds like 'Kitty', acting as a smart visual bait!",
+            explanationBn = "KITTEN-এর সংক্ষিপ্ত রূপ হলো 'KIT', তবে 'MITTY' নামটি শুনতে কিটির মতো হওয়ায় এটি একটি ফাঁদ!",
             explanationEn = "KIT is correct, but MITTY sounds like 'Kitty', acting as a smart visual bait!"
         ),
         Question(
             id = 2, stage = 1, level = 2,
-            questionBn = "What is 1 + 1?",
+            questionBn = "১ + ১ সমান কত?",
             questionEn = "What is 1 + 1?",
             type = "math_trap",
-            optionsBn = listOf("2", "11", "3", "0"),
+            optionsBn = listOf("2 (দুই)", "11 (এগারো)", "3 (তিন)", "0 (শূন্য)"),
             optionsEn = listOf("2", "11", "3", "0"),
             correctIndex = 1,
             isTrick = true,
-            explanationBn = "Placing 1 next to another 1 side-by-side literally makes 11!",
+            explanationBn = "একটি ১ এর পাশে আরেকটি ১ পাশাপাশি বসালে তা আক্ষরিক অর্থে ১১ হয়ে যায়!",
             explanationEn = "Placing 1 next to another 1 side-by-side literally makes 11!"
         ),
         Question(
             id = 3, stage = 1, level = 3,
-            questionBn = "What must you do at a red signal light?",
+            questionBn = "ট্রাফিকের লাল সিগন্যাল লাইটে আপনাকে অবশ্যই কী করতে হবে?",
             questionEn = "What must you do at a red signal light?",
             type = "normal",
-            optionsBn = listOf("Accelerate speed", "Ignore signal", "Stop vehicles (STOP)", "Honk horn"),
+            optionsBn = listOf("গতিসীমা বাড়ানো", "সিগন্যাল অমান্য করা", "যানবাহন থামানো (STOP)", "হর্ন বাজানো"),
             optionsEn = listOf("Accelerate speed", "Ignore signal", "Stop vehicles (STOP)", "Honk horn"),
             correctIndex = 2,
             isTrick = false,
-            explanationBn = "Red light means you must stop. A straightforward, honest question!",
+            explanationBn = "লাল সিগন্যাল লাইট মানে আপনাকে অবশ্যই গাড়ি থামাতে হবে। এটি খুবই সহজ ও সাধারণ সত্য!",
             explanationEn = "Red light means you must stop. A straightforward, honest question!"
         ),
         Question(
             id = 4, stage = 1, level = 4,
-            questionBn = "Which month has 28 days?",
+            questionBn = "কোন মাসে ২৮ দিন থাকে?",
             questionEn = "Which month has 28 days?",
             type = "trick",
-            optionsBn = listOf("February", "January", "December", "All 12 Months"),
+            optionsBn = listOf("ফেব্রুয়ারি", "জানুয়ারি", "ডিসেম্বর", "১২টি মাসের সবগুলোতেই"),
             optionsEn = listOf("February", "January", "December", "All 12 Months"),
             correctIndex = 3,
             isTrick = true,
-            explanationBn = "Every single month of the year has at least 28 days! Double-trap logic.",
+            explanationBn = "বছরের প্রতিটি মাসেই কমপক্ষে ২৮টি দিন বিদ্যমান থাকে! ডাবল-ট্র্যাপ ধাঁধা!",
             explanationEn = "Every single month of the year has at least 28 days! Double-trap logic."
         ),
         Question(
             id = 5, stage = 1, level = 5,
-            questionBn = "If you overtake the person in 2nd place in a race, what position are you in?",
+            questionBn = "দৌড় প্রতিযোগিতায় আপনি ২য় স্থানে থাকা রানারকে অতিক্রম করলে আপনার বর্তমান অবস্থান কী হবে?",
             questionEn = "If you overtake the person in 2nd place in a race, what position are you in?",
             type = "trick",
-            optionsBn = listOf("1st place", "2nd place", "3rd place", "Last place"),
+            optionsBn = listOf("১ম স্থান", "২য় স্থান", "৩য় স্থান", "সর্বশেষ স্থান"),
             optionsEn = listOf("1st place", "2nd place", "3rd place", "Last place"),
             correctIndex = 1,
             isTrick = true,
-            explanationBn = "By passing the runner in 2nd place, you take their spot, remaining in 2nd!",
+            explanationBn = "২য় স্থানে থাকা রানারকে অতিক্রম করে আপনি তার জায়গাটিই দখল করেছেন, তাই আপনি ২য় স্থানে আছেন!",
             explanationEn = "By passing the runner in 2nd place, you take their spot, remaining in 2nd!"
         ),
         Question(
             id = 6, stage = 1, level = 6,
-            questionBn = "5 birds on a branch. A hunter shoots and kills 1. How many birds are left on the branch?",
+            questionBn = "গাছের ডালে ৫টি পাখি ছিল। এক শিকারি বন্দুকের গুলিতে ১টি পাখিকে মেরে ফেলল। ডালে আর কয়টি পাখি থাকবে?",
             questionEn = "5 birds on a branch. A hunter shoots and kills 1. How many birds are left on the branch?",
             type = "math_trap",
-            optionsBn = listOf("4 birds", "0 (None)", "5 birds", "1 bird"),
+            optionsBn = listOf("৪টি পাখি", "০টি (একটিও না)", "৫টি পাখি", "১টি পাখি"),
             optionsEn = listOf("4 birds", "0 (None)", "5 birds", "1 bird"),
             correctIndex = 1,
             isTrick = true,
-            explanationBn = "At the terrifying sound of the gunshot, the remaining birds flew away instantly!",
+            explanationBn = "বন্দুকের গুলির তীব্র আওয়াজ শোনার সাথে সাথে বাকি সব পাখি সাথে সাথে উড়ে পালিয়ে গেছে!",
             explanationEn = "At the terrifying sound of the gunshot, the remaining birds flew away instantly!"
         ),
         Question(
             id = 7, stage = 1, level = 7,
-            questionBn = "In the word 'ENGLISH', which letter comes directly after 'E'?",
+            questionBn = "'ENGLISH' শব্দটিতে 'E' অক্ষরের ঠিক পরেই কোন অক্ষরটি আসে?",
             questionEn = "In the word 'ENGLISH', which letter comes directly after 'E'?",
             type = "trick",
             optionsBn = listOf("F", "N", "G", "R"),
             optionsEn = listOf("F", "N", "G", "R"),
             correctIndex = 1,
             isTrick = true,
-            explanationBn = "In the letters of the alphabet, F follows E. But in the spelling of 'ENGLISH', N follows E!",
+            explanationBn = "বর্ণমালা হিসেবে E এর পরে F এলেও, 'ENGLISH' বনানটিতে E এর ঠিক পরে N এসেছে!",
             explanationEn = "In the letters of the alphabet, F follows E. But in the spelling of 'ENGLISH', N follows E!"
         ),
         Question(
             id = 8, stage = 1, level = 8,
-            questionBn = "If you make a tight closed fist with your hand, how many fingernails can you see?",
+            questionBn = "আপনি যদি হাত মুঠো করে শক্ত করে মুষ্টি তৈরি করেন, তবে কয়টি নখ দেখতে পাবেন?",
             questionEn = "If you make a tight closed fist with your hand, how many fingernails can you see?",
             type = "trick",
-            optionsBn = listOf("5 nails", "0 nails", "1 nail (Thumb)", "10 nails"),
+            optionsBn = listOf("৫টি নখ", "০টি নখ", "১টি নখ (বৃদ্ধাঙ্গুল)", "১০টি নখ"),
             optionsEn = listOf("5 nails", "0 nails", "1 nail (Thumb)", "10 nails"),
             correctIndex = 2,
             isTrick = true,
-            explanationBn = "Only your thumb's fingernail remains visible on the outside of a closed fist.",
+            explanationBn = "মুষ্টি বন্ধ করলে একমাত্র বৃদ্ধাঙ্গুলের নখটিই বাইরের দিকে স্পষ্টভাবে দৃশ্যমান থাকে!",
             explanationEn = "Only your thumb's fingernail remains visible on the outside of a closed fist."
         ),
         Question(
             id = 9, stage = 1, level = 9,
-            questionBn = "Click the BLUE button!",
+            questionBn = "নীল (BLUE) বাটনটিতে ক্লিক করুন!",
             questionEn = "Click the BLUE button!",
             type = "ui_trick",
-            optionsBn = listOf("Blue Text (Colored Red)", "Red Text (Colored Blue)", "Yellow Button", "Green Button"),
+            optionsBn = listOf("নীল লেখা (লাল বাটন)", "লাল লেখা (নীল বাটন)", "হলুদ বাটন", "সবুজ বাটন"),
             optionsEn = listOf("Blue Text (Colored Red)", "Red Text (Colored Blue)", "Yellow Button", "Green Button"),
             correctIndex = 1,
             isTrick = true,
-            explanationBn = "Don't fall for the text label! You had to click the button physically styled in Blue.",
+            explanationBn = "বাটনে লেখা টেক্সট দেখে বিভ্রান্ত হবেন না! মূলত বাটনের শারীরিক নীল রঙটি দেখেই ২য় বাটনটিতে ট্যাপ করতে হবে।",
             explanationEn = "Don't fall for the text label! You had to click the button physically styled in Blue."
         ),
         Question(
             id = 10, stage = 1, level = 10,
-            questionBn = "How many sides does a perfect circle have?",
+            questionBn = "একটি নিখুঁত বৃত্তের কয়টি দিক বা সাইড থাকে?",
             questionEn = "How many sides does a perfect circle have?",
             type = "trick",
-            optionsBn = listOf("1 side", "0 sides", "2 sides (In & Out)", "Infinite"),
+            optionsBn = listOf("১টি", "০টি", "২টি (ভেতর ও বাহির)", "অসংখ্য"),
             optionsEn = listOf("1 side", "0 sides", "2 sides (In & Out)", "Infinite"),
             correctIndex = 2,
             isTrick = true,
-            explanationBn = "A standard circle has exactly two sides: the inside and the outside!",
+            explanationBn = "যেকোনো বৃত্তেরই মূলত ২টি দিক থাকে—একটি ভেতরের দিক এবং আরেকটি বাইরের দিক!",
             explanationEn = "A standard circle has exactly two sides: the inside and the outside!"
         ),
         Question(
             id = 11, stage = 1, level = 11,
-            questionBn = "How do you drop an egg on a concrete floor without cracking it?",
+            questionBn = "কংক্রিটের মেঝেতে ডিম ফেললে কীভাবে ডিমটি ফাটবে না?",
             questionEn = "How do you drop an egg on a concrete floor without cracking it?",
             type = "trick",
-            optionsBn = listOf("Use a foam sheet", "Use a cushion", "Concrete won't break, drop it!", "Boil the egg first"),
+            optionsBn = listOf("ফোম ব্যবহার করে", "কুশন ব্যবহার করে", "মেঝে ভাঙবে না, নির্দ্বিধায় ফেলুন!", "ডিম সিদ্ধ করে নিয়ে"),
             optionsEn = listOf("Use a foam sheet", "Use a cushion", "Concrete won't break, drop it!", "Boil the egg first"),
             correctIndex = 2,
             isTrick = true,
-            explanationBn = "Concrete floors are so durable that dropping an egg will never crack the steel-hard floor!",
+            explanationBn = "কংক্রিট মেঝে এত বেশি শক্ত ও মজবুত যে একটি সাধারণ ডিম উপর থেকে ফেললে মেঝেটি কখনোই ফাটবে না বা একটুও ক্ষতিগ্রস্ত হবে না!",
             explanationEn = "Concrete floors are so durable that dropping an egg will never crack the steel-hard floor!"
         ),
         Question(
             id = 12, stage = 1, level = 12,
-            questionBn = "What gets wetter the more it dries?",
+            questionBn = "কোনটি মুছতে থাকলে নিজেই অধিক ভিজতে থাকে?",
             questionEn = "What gets wetter the more it dries?",
             type = "normal",
-            optionsBn = listOf("Sponge", "Towel", "River Water", "Rain Cloud"),
+            optionsBn = listOf("স্পঞ্জ", "তোয়ালে", "নদীর পানি", "বৃষ্টির মেঘ"),
             optionsEn = listOf("Sponge", "Towel", "River Water", "Rain Cloud"),
             correctIndex = 1,
             isTrick = false,
-            explanationBn = "A bath towel absorbs moisture from your body code, getting wet in the drying action.",
+            explanationBn = "আপনি গায়ের পানি মুছতে তোয়ালে ব্যবহার করলে তোয়ালেটি নিজেই বেশি ভিজতে শুরু করে!",
             explanationEn = "A bath towel absorbs moisture from your body code, getting wet in the drying action."
         ),
         Question(
             id = 13, stage = 1, level = 13,
-            questionBn = "What hatches from a peacock egg?",
+            questionBn = "ময়ূরের ডিম থেকে কী ফোটে বা বের হয়?",
             questionEn = "What hatches from a peacock egg?",
             type = "trick",
-            optionsBn = listOf("Baby peacock", "Baby peahen", "Nothing (Peacocks don't lay)", "Cute swan"),
+            optionsBn = listOf("ছোট ময়ূর", "ছোট ময়ূরী", "কিছুই না (ময়ূর ডিম পাড়ে না)", "সুন্দর রাজহাঁস"),
             optionsEn = listOf("Baby peacock", "Baby peahen", "Nothing (Peacocks don't lay)", "Cute swan"),
             correctIndex = 2,
             isTrick = true,
-            explanationBn = "Peacocks are male birds. They do not spawn eggs—only peahens do!",
+            explanationBn = "ময়ূর হলো পুরুষ পাখি। তাই তারা কখনো ডিম পাড়তে পারে না—কেবল ময়ূরীরাই ডিম পাড়ে!",
             explanationEn = "Peacocks are male birds. They do not spawn eggs—only peahens do!"
         ),
         Question(
             id = 14, stage = 1, level = 14,
-            questionBn = "You have 3 apples. If you take away 2 of them, how many do you have now?",
+            questionBn = "আপনার ৩টি আপেল আছে। সেখান থেকে ২টি আপেল কেড়ে নিলে আপনার কাছে এখন কয়টি আপেল আছে?",
             questionEn = "You have 3 apples. If you take away 2 of them, how many do you have now?",
             type = "trick",
-            optionsBn = listOf("1 apple", "2 apples (you took)", "3 apples", "0"),
+            optionsBn = listOf("১টি আপেল", "২টি আপেল (যা আপনি নিয়েছেন)", "৩টি আপেল", "০টি"),
             optionsEn = listOf("1 apple", "2 apples (you took)", "3 apples", "0"),
             correctIndex = 1,
             isTrick = true,
-            explanationBn = "Since you took those 2 apples yourself, they are physically in your possession!",
+            explanationBn = "যেহেতু আপনি নিজেই ২টি আপেল কেড়ে নিয়েছেন, তাই আপনার নিজের কাছে এখন সেই ২টি আপেলই আছে!",
             explanationEn = "Since you took those 2 apples yourself, they are physically in your possession!"
         ),
         Question(
             id = 15, stage = 1, level = 15,
-            questionBn = "Which lives in water but is biologically NOT classified as a fish?",
+            questionBn = "কোনটি পানিতে বাস করলেও জীববিজ্ঞান অনুযায়ী মাছের অন্তর্ভুক্ত নয়?",
             questionEn = "Which lives in water but is biologically NOT classified as a fish?",
             type = "normal",
-            optionsBn = listOf("Whale", "Shrimp", "Frog", "All of these"),
+            optionsBn = listOf("তিমি", "চিংড়ি", "ব্যাঙ", "সবগুলোই"),
             optionsEn = listOf("Whale", "Shrimp", "Frog", "All of these"),
             correctIndex = 3,
             isTrick = false,
-            explanationBn = "Whales are mammals, shrimps are crustaceans, frogs are amphibians. None are taxonomic fish!",
+            explanationBn = "তিমি স্তন্যপায়ী, চিংড়ি ক্রাস্টেসিয়ান এবং ব্যাঙ উভচর প্রাণী। এদের একটিও প্রকৃত মাছ নয়!",
             explanationEn = "Whales are mammals, shrimps are crustaceans, frogs are amphibians. None are taxonomic fish!"
         ),
-        // Stage 2 Curated Sample Questions (Level 51-55)
         Question(
             id = 16, stage = 2, level = 51,
-            questionBn = "Click the largest number button below!",
+            questionBn = "নিচের সবচেয়ে বড় বাটনটিতে ক্লিক করুন!",
             questionEn = "Click the largest number button below!",
             type = "ui_trick",
-            optionsBn = listOf("999", "1000", "7 (Massive element)", "8888"),
+            optionsBn = listOf("999", "1000", "7 (মারাত্মক বাটন)", "8888"),
             optionsEn = listOf("999", "1000", "7 (Massive element)", "8888"),
             correctIndex = 2,
             isTrick = true,
-            explanationBn = "The value '7' button is visually scaled three times larger than the rest!",
+            explanationBn = "বাটনের সংখ্যাগত মান নয়, বরং আকারের বিচারে '7' বাটনটি অন্যগুলোর চেয়ে ৩ গুণ বড় করা হয়েছে!",
             explanationEn = "The value '7' button is visually scaled three times larger than the rest!"
         ),
         Question(
             id = 17, stage = 2, level = 52,
-            questionBn = "Botanically, which of these is NOT a vegetable, but a fruit?",
+            questionBn = "উদ্ভিদবৈজ্ঞানিক সংজ্ঞা অনুযায়ী নিচের কোনটি সবজি নয় বরং একটি ফল?",
             questionEn = "Botanically, which of these is NOT a vegetable, but a fruit?",
             type = "normal",
-            optionsBn = listOf("Carrot", "Garlic", "Tomato", "Potato"),
+            optionsBn = listOf("গাজর", "রসুন", "টমেটো", "আলু"),
             optionsEn = listOf("Carrot", "Garlic", "Tomato", "Potato"),
             correctIndex = 2,
             isTrick = false,
-            explanationBn = "Because tomatoes contain seeds, they are botanically classified as berries/fruits!",
+            explanationBn = "টমেটোর ভেতরে বীজ থাকায় উদ্ভিদবিজ্ঞানের দৃষ্টিকোণ থেকে এটিকে বেরি প্রজাতির ফল বলা হয়!",
             explanationEn = "Because tomatoes contain seeds, they are botanically classified as berries/fruits!"
         ),
         Question(
             id = 18, stage = 2, level = 53,
-            questionBn = "Click the green button, careful!",
+            questionBn = "সবুজ বাটনটিতে ক্লিক করুন, সাবধান!",
             questionEn = "Click the green button, careful!",
             type = "ui_trick",
-            optionsBn = listOf("Green (Colored Yellow)", "Yellow (Colored Cyan)", "Click Me (Colored Green)", "Grey (Colored Red)"),
+            optionsBn = listOf("সবুজ লেখা (হলুদ বাটন)", "হলুদ লেখা (সায়ান বাটন)", "ক্লিক মি (সবুজ বাটন)", "ধূসর লেখা (লাল বাটন)"),
             optionsEn = listOf("Green (Colored Yellow)", "Yellow (Colored Cyan)", "Click Me (Colored Green)", "Grey (Colored Red)"),
             correctIndex = 2,
             isTrick = true,
-            explanationBn = "The 3rd button background is colored solid green, don't read text!",
+            explanationBn = "লেখার অর্থের জালে বিভ্রান্ত হবেন না! মূলত ৩য় বাটনটির ব্যাকগ্রাউন্ড কালার দৃশ্যত সবুজ রঙের করা হয়েছে।",
             explanationEn = "The 3rd button background is colored solid green, don't read text!"
         ),
         Question(
             id = 19, stage = 2, level = 54,
-            questionBn = "Twelve months make a year. How many months have 30 days?",
+            questionBn = "১২ মাসে এক বছর। বছরের মোট কয়টি মাসে অন্তত ৩০টি দিন রয়েছে?",
             questionEn = "Twelve months make a year. How many months have 30 days?",
             type = "trick",
-            optionsBn = listOf("4 months", "5 months", "11 months", "12 months"),
+            optionsBn = listOf("৪টি মাস", "৫টি মাস", "১১টি মাস", "১২টি মাস"),
             optionsEn = listOf("4 months", "5 months", "11 months", "12 months"),
             correctIndex = 2,
             isTrick = true,
-            explanationBn = "Excluding February, 11 months of the year have at least 30 days inside!",
+            explanationBn = "ফেব্রুয়ারি ব্যতীত বছরের বাকি ১১টি মাসের প্রতিটিতেই অন্ততপক্ষে ৩০টি বা তার বেশি দিন আছে!",
             explanationEn = "Excluding February, 11 months of the year have at least 30 days inside!"
         ),
         Question(
             id = 20, stage = 2, level = 55,
-            questionBn = "5 cakes take 5 minutes to bake. How long does it take for 100 ovens to bake 100 cakes simultaneously?",
+            questionBn = "৫টি কেক বেক হতে ৫ মিনিট লাগে। তবে ১০০টি পৃথক ওভেনে একসাথে ১০০টি কেক বেক হতে কত মিনিট লাগবে?",
             questionEn = "5 cakes take 5 minutes to bake. How long does it take for 100 ovens to bake 100 cakes simultaneously?",
             type = "math_trap",
-            optionsBn = listOf("100 minutes", "5 minutes (Same time)", "50 minutes", "500 minutes"),
+            optionsBn = listOf("১০০ মিনিট", "৫ মিনিট (একই সাথে)", "৫০ মিনিট", "৫০০ মিনিট"),
             optionsEn = listOf("100 minutes", "5 minutes (Same time)", "50 minutes", "500 minutes"),
             correctIndex = 1,
             isTrick = true,
-            explanationBn = "Because every cake has its own oven, all will capture exactly 5 minutes together!",
+            explanationBn = "যেহেতু প্রতি কেকের জন্য আলাদা আলাদা ওভেন রয়েছে, তাই সবগুলো কেকই এক সাথে ৫ মিনিটে তৈরি হয়ে যাবে!",
             explanationEn = "Because every cake has its own oven, all will capture exactly 5 minutes together!"
         ),
-        // Stage 3 Curated Sample Questions (Level 101-105)
         Question(
             id = 21, stage = 3, level = 101,
-            questionBn = "Tap the button named 'FALSE'!",
+            questionBn = "নিচের 'FALSE' নামের বাটনটিতে ক্লিক করুন!",
             questionEn = "Tap the button named 'FALSE'!",
             type = "ui_trick",
-            optionsBn = listOf("TRUE (Tap here)", "OK", "FALSE", "CANCEL"),
+            optionsBn = listOf("TRUE (এখানে চাপুন)", "ওকে", "FALSE (মিথ্যা)", "ক্যান্সেল"),
             optionsEn = listOf("TRUE (Tap here)", "OK", "FALSE", "CANCEL"),
             correctIndex = 0,
             isTrick = true,
-            explanationBn = "Mind-twist: Clicking 'FALSE' triggers a trap, you actually had to tap 'TRUE'!",
+            explanationBn = "মনস্তাত্ত্বিক মোচড়! 'FALSE' নামের বোতামটিতে চাপ দিলে ফাঁদে জড়াতেন, আপনাকে চাপতে হতো প্রথম বাটনটি যেখানে ইংরেজিতে 'TRUE' লেখা ছিল!",
             explanationEn = "Mind-twist: Clicking 'FALSE' triggers a trap, you actually had to tap 'TRUE'!"
         ),
         Question(
             id = 22, stage = 3, level = 102,
-            questionBn = "How many letters are in the alphabet?",
+            questionBn = "ইংরেজি 'the alphabet' শব্দগুচ্ছতে মোট কয়টি অক্ষর বা লেটার আছে?",
             questionEn = "How many letters are in the alphabet?",
             type = "trick",
-            optionsBn = listOf("26 letters", "24 letters", "11 letters", "12 letters"),
+            optionsBn = listOf("২৬টি অক্ষর", "২৪টি অক্ষর", "১১টি অক্ষর", "১২টি অক্ষর"),
             optionsEn = listOf("26 letters", "24 letters", "11 letters", "12 letters"),
             correctIndex = 2,
             isTrick = true,
-            explanationBn = "The phrase 'the alphabet' consists of exactly 11 letters!",
+            explanationBn = "ইংরেজি 'the alphabet' বাক্যাংশটি গুণলে আক্ষরিক অর্থে ঠিক ১১টি অক্ষর (t, h, e, a, l, p, h, a, b, e, t) পাবেন!",
             explanationEn = "The phrase 'the alphabet' consists of exactly 11 letters!"
         ),
         Question(
             id = 23, stage = 3, level = 103,
-            questionBn = "[Memory Test] What was the correct answer of the previous level?",
+            questionBn = "[স্মৃতিশক্তি পরীক্ষা] পূর্ববর্তী লেভেলের সঠিক উত্তর কোনটি ছিল?",
             questionEn = "[Memory Test] What was the correct answer of the previous level?",
             type = "memory",
-            optionsBn = listOf("26 letters", "24 letters", "11 letters", "12 letters"),
+            optionsBn = listOf("২৬টি অক্ষর", "২৪টি অক্ষর", "১১টি অক্ষর", "১২টি অক্ষর"),
             optionsEn = listOf("26 letters", "24 letters", "11 letters", "12 letters"),
             correctIndex = 2,
             isTrick = true,
-            explanationBn = "Memory test! The correct answer of Level 102 was '11 letters'!",
+            explanationBn = "আপনার স্মৃতিশক্তি বেশ চমৎকার! পূর্ববর্তী ১০২তম লেভেলের সঠিক উত্তরটি ছিল মূলত '১১টি অক্ষর' বা '11 letters'!",
             explanationEn = "Memory test! The correct answer of Level 102 was '11 letters'!"
         ),
         Question(
             id = 24, stage = 3, level = 104,
-            questionBn = "If 1 dozen bananas cost 30 Taka, how much is half a dozen of bananas?",
+            questionBn = "১ ডজন কলার দাম যদি ৩০ টাকা হয়, তবে অর্ধেক ডজন কলার দাম কত হবে?",
             questionEn = "If 1 dozen bananas cost 30 Taka, how much is half a dozen of bananas?",
             type = "math_trap",
-            optionsBn = listOf("15 Taka", "60 Taka", "5 Taka", "100 Taka"),
+            optionsBn = listOf("১৫ টাকা", "৬০ টাকা", "৫ টাকা", "১০০ টাকা"),
             optionsEn = listOf("15 Taka", "60 Taka", "5 Taka", "100 Taka"),
             correctIndex = 0,
             isTrick = false,
-            explanationBn = "Half of 30 is 15. The puzzle is thinking there is a trick when there isn't!",
+            explanationBn = "৩০ টাকার অর্ধেক হলো ১৫ টাকা। এই প্রশ্নটিতে কোনো ট্রিক নেই, ট্রিক খুঁজতে যাওয়াই ছিল মনের ট্র্যাপ!",
             explanationEn = "Half of 30 is 15. The puzzle is thinking there is a trick when there isn't!"
         ),
         Question(
             id = 25, stage = 3, level = 105,
-            questionBn = "3 electrical wires are required to light 1 bulb. How many wires are needed to light 9 bulbs in series?",
+            questionBn = "১টি বাল্ব জ্বালাতে ৩টি বৈদ্যুতিক তারের প্রয়োজন হলে সিরিজ সংযোগে ৯টি বাল্ব জ্বালাতে মোট কয়টি তার লাগবে?",
             questionEn = "3 electrical wires are required to light 1 bulb. How many wires are needed to light 9 bulbs in series?",
             type = "math_trap",
-            optionsBn = listOf("27 wires", "3 wires (Series connection)", "9 wires", "18 wires"),
+            optionsBn = listOf("২৭টি তার", "৩টি তার (সিরিজ সংযোগ)", "৯টি তার", "১৮টি তার"),
             optionsEn = listOf("27 wires", "3 wires (Series connection)", "9 wires", "18 wires"),
             correctIndex = 1,
             isTrick = true,
-            explanationBn = "Connected end-to-end in a smart series circuit, only 3 wire loops run all 9 bulbs!",
+            explanationBn = "কলাकৌশল খাটিয়ে সিরিজ বা সারিবদ্ধ সার্কিটে সাজানো থাকলে মাত্র ৩টি তার দিয়েই ৯টি বাল্ব অনায়াসে জ্বালানো যায়!",
             explanationEn = "Connected end-to-end in a smart series circuit, only 3 wire loops run all 9 bulbs!"
         )
     )
@@ -859,6 +857,7 @@ class GameViewModel(private val context: Context) : ViewModel() {
                 showExplanation = false,
                 selectedOptionIndex = -1,
                 revealedIncorrectIndices = emptySet(),
+                wrongAnswerIndices = emptySet(),
                 uiTrickState = UiTrickState()
             )
         }
@@ -949,13 +948,14 @@ class GameViewModel(private val context: Context) : ViewModel() {
         val state = _uiState.value
         if (state.screenType != ScreenType.GAME_SCREEN) return
 
-        timerJob?.cancel()
-        uiTrickTimerJob?.cancel()
-
         val q = state.currentQuestion ?: return
         val isCorrect = (index == q.correctIndex)
 
         if (isCorrect) {
+            // Cancel timers
+            timerJob?.cancel()
+            uiTrickTimerJob?.cancel()
+
             SoundManager.playCorrect()
             // Speed bonus
             val speedBonus = if (state.timeLeft >= (state.totalLevelTime - 5)) 5 else 0
@@ -999,11 +999,10 @@ class GameViewModel(private val context: Context) : ViewModel() {
                         selectedOptionIndex = index,
                         isShieldActive = false, // shield consumed
                         explanationTitle = "Shield Defended",
-                        showExplanation = true
+                        showExplanation = true,
+                        wrongAnswerIndices = it.wrongAnswerIndices + index
                     )
                 }
-                // Restart timer to continue play
-                startTimer()
                 return
             }
 
@@ -1015,16 +1014,34 @@ class GameViewModel(private val context: Context) : ViewModel() {
             val penaltyScore = (state.score - 5).coerceAtLeast(0)
             prefs.setScore(penaltyScore)
 
-            _uiState.update {
-                it.copy(
-                    lives = nextLives,
-                    score = penaltyScore,
-                    coins = prefs.getCoins(),
-                    selectedOptionIndex = index,
-                    isCorrectAnswer = false,
-                    screenType = ScreenType.RESULT_SCREEN,
-                    explanationTitle = "Wrong!"
-                )
+            if (nextLives == 0) {
+                // Cancel timers ONLY on Game Over!
+                timerJob?.cancel()
+                uiTrickTimerJob?.cancel()
+
+                _uiState.update {
+                    it.copy(
+                        lives = 0,
+                        score = penaltyScore,
+                        coins = prefs.getCoins(),
+                        selectedOptionIndex = index,
+                        isCorrectAnswer = false,
+                        screenType = ScreenType.RESULT_SCREEN,
+                        explanationTitle = "Wrong!",
+                        wrongAnswerIndices = it.wrongAnswerIndices + index
+                    )
+                }
+            } else {
+                // Stay on the same screen, just mark incorrect index and deduct life!
+                _uiState.update {
+                    it.copy(
+                        lives = nextLives,
+                        score = penaltyScore,
+                        selectedOptionIndex = index,
+                        wrongAnswerIndices = it.wrongAnswerIndices + index,
+                        showToastMsg = if (language.value == "bn") "ভুল উত্তর! ১টি ❤️ হারালেন!" else "Wrong Answer! Lost 1 ❤️!"
+                    )
+                }
             }
         }
     }
@@ -1327,16 +1344,30 @@ class GameViewModel(private val context: Context) : ViewModel() {
     }
 
     fun purchaseStoreItemByPoints(type: String, cost: Int) {
-        val currentScore = prefs.getScore()
-        if (currentScore < cost) {
+        val currentCoins = prefs.getCoins()
+        if (currentCoins < cost) {
             _uiState.update {
-                it.copy(showToastMsg = if (language.value == "bn") "পর্যাপ্ত বাল্ব 💡 নেই!" else "Not enough Bulbs 💡!" )
+                it.copy(showToastMsg = if (language.value == "bn") "পর্যাপ্ত কয়েন 🪙 নেই!" else "Not enough Coins 🪙!" )
             }
             return
         }
 
-        val nextScore = currentScore - cost
-        prefs.setScore(nextScore)
+        val nextCoins = currentCoins - cost
+        prefs.setCoins(nextCoins)
+        _coins.value = nextCoins
+
+        if (type == "lives") {
+            prefs.setLives(3)
+            _uiState.update {
+                it.copy(
+                    lives = 3,
+                    coins = nextCoins,
+                    showToastMsg = if (language.value == "bn") "আপনার লাইফ পূর্ণ করা হয়েছে! ❤️❤️❤️" else "Full lives restored! ❤️❤️❤️"
+                )
+            }
+            loadLevel(_uiState.value.currentLevelNumber)
+            return
+        }
 
         val count = prefs.getPowerUpCount(type) + 3
         prefs.setPowerUpCount(type, count)
@@ -1351,7 +1382,7 @@ class GameViewModel(private val context: Context) : ViewModel() {
 
         _uiState.update {
             it.copy(
-                score = nextScore,
+                coins = nextCoins,
                 showToastMsg = if (language.value == "bn") "পাওয়ার-আপ প্যাক কেনা সফল হয়েছে! 🎁" else "Power-up bundle purchased! 🎁"
             )
         }
@@ -1392,6 +1423,7 @@ data class GameUiState(
     val isFreezeActive: Boolean = false,
     val selectedOptionIndex: Int = -1,
     val revealedIncorrectIndices: Set<Int> = emptySet(),
+    val wrongAnswerIndices: Set<Int> = emptySet(),
     val isCorrectAnswer: Boolean = false,
     val showExplanation: Boolean = false,
     val explanationTitle: String = "",

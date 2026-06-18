@@ -32,6 +32,7 @@ import com.example.ui.theme.MyApplicationTheme
 import com.example.ui.theme.*
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -127,12 +128,19 @@ class MainActivity : ComponentActivity() {
                             }
                         }
 
+                        val languageCode by viewModel.language.collectAsState()
+
                         // Premium simulation interactive modal overlays
                         if (uiState.showSimulatedAdOffer) {
                             AdSimulationOverlay(
                                 gameState = uiState,
+                                languageCode = languageCode,
                                 onRestored = {
                                     viewModel.claimAdForFullLives()
+                                },
+                                onBuyWithCoins = {
+                                    viewModel.purchaseStoreItemByPoints("lives", 40)
+                                    viewModel.closeAdOffer()
                                 },
                                 onClose = {
                                     viewModel.closeAdOffer()
@@ -140,7 +148,6 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        val languageCode by viewModel.language.collectAsState()
                         if (uiState.isAdPlaying) {
                             AdPlayerScreen(gameState = uiState, languageCode = languageCode)
                         }

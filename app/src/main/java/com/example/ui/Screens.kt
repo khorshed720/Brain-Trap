@@ -940,9 +940,7 @@ fun HomeScreen(
                     // Help Question mark circles
                     ComicCircleButton(
                         onClick = {
-                            viewModel.startCampaignAd {
-                                viewModel.setStoreDialogVisible(true)
-                            }
+                            viewModel.setStoreDialogVisible(true)
                         },
                         backgroundColor = ComicBlue,
                         size = 56.dp
@@ -1378,23 +1376,24 @@ fun HomeScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = if (playLang == "bn") "Power & Tool Shop" else "Power & Tool Shop",
+                            text = if (playLang == "bn") "পাওয়ার ও টুল শপ" else "Power & Tool Shop",
                             fontWeight = FontWeight.Black,
                             fontSize = 20.sp,
                             color = Color.Black
                         )
                         Text(
-                            text = if (playLang == "bn") "Trade bulbs to buy vital power-ups!" else "Trade bulbs to buy vital puzzle powers!",
+                            text = if (playLang == "bn") "কয়েন খরচ করে আকর্ষনীয় বুস্টার ও লাইফ রিফিল কিনুন!" else "Trade coins to buy vital puzzle powers & life refills!",
                             fontSize = 11.sp,
                             color = Color.DarkGray,
                             fontWeight = FontWeight.Medium,
-                            modifier = Modifier.padding(top = 2.dp)
+                            modifier = Modifier.padding(top = 2.dp),
+                            textAlign = TextAlign.Center
                         )
                     }
                 },
                 text = {
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         // Store Item 1: Freeze
@@ -1407,15 +1406,15 @@ fun HomeScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Column {
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = if (playLang == "bn") "Time Freeze Pack (x3)" else "Time Freeze Pack (x3)",
+                                    text = if (playLang == "bn") "সময় ফ্রিজ প্যাক (x৩)" else "Time Freeze Pack (x3)",
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.Black
                                 )
                                 Text(
-                                    text = if (playLang == "bn") "Adds +15s to puzzle timers" else "Adds +15s to puzzle timers",
+                                    text = if (playLang == "bn") "পাজল টাইমারের সময় আরও ১৫ সেকেন্ড বাড়ায়" else "Adds +15s to puzzle timers",
                                     fontSize = 10.sp,
                                     color = Color.Gray
                                 )
@@ -1424,9 +1423,10 @@ fun HomeScreen(
                                 onClick = { viewModel.purchaseStoreItemByPoints("freeze", 50) },
                                 colors = ButtonDefaults.buttonColors(containerColor = ComicYellow),
                                 border = BorderStroke(1.5.dp, Color.Black),
-                                shape = RoundedCornerShape(8.dp)
+                                shape = RoundedCornerShape(8.dp),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
                             ) {
-                                Text("50 Bulbs", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.Black)
+                                Text(if (playLang == "bn") "৫০ কয়েন" else "50 Coins", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.Black)
                             }
                         }
 
@@ -1440,15 +1440,15 @@ fun HomeScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Column {
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = if (playLang == "bn") "Bomb Popper Pack (x3)" else "Bomb Popper Pack (x3)",
+                                    text = if (playLang == "bn") "বম্ব পপার প্যাক (x৩)" else "Bomb Popper Pack (x3)",
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.Black
                                 )
                                 Text(
-                                    text = if (playLang == "bn") "Instantly removes 2 wrong options" else "Instantly removes 2 wrong options",
+                                    text = if (playLang == "bn") "পাজলের ২টি ভুল উত্তর সাথে সাথে উধাও করে" else "Instantly removes 2 wrong options",
                                     fontSize = 10.sp,
                                     color = Color.Gray
                                 )
@@ -1457,9 +1457,10 @@ fun HomeScreen(
                                 onClick = { viewModel.purchaseStoreItemByPoints("bomb", 75) },
                                 colors = ButtonDefaults.buttonColors(containerColor = ComicYellow),
                                 border = BorderStroke(1.5.dp, Color.Black),
-                                shape = RoundedCornerShape(8.dp)
+                                shape = RoundedCornerShape(8.dp),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
                             ) {
-                                Text("75 Bulbs", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.Black)
+                                Text(if (playLang == "bn") "৭৫ কয়েন" else "75 Coins", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.Black)
                             }
                         }
 
@@ -1473,15 +1474,15 @@ fun HomeScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Column {
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = if (playLang == "bn") "Shield Defend Pack (x3)" else "Shield Defend Pack (x3)",
+                                    text = if (playLang == "bn") "শিল্ড ডিফেন্ড প্যাক (x৩)" else "Shield Defend Pack (x3)",
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.Black
                                 )
                                 Text(
-                                    text = if (playLang == "bn") "Prevents failure penalty on 1 error" else "Prevents failure penalty on 1 error",
+                                    text = if (playLang == "bn") "একটি ভুল উত্তরে হার্ট হারানোর হাত থেকে বাঁচায়" else "Prevents failure penalty on 1 error",
                                     fontSize = 10.sp,
                                     color = Color.Gray
                                 )
@@ -1490,9 +1491,10 @@ fun HomeScreen(
                                 onClick = { viewModel.purchaseStoreItemByPoints("shield", 60) },
                                 colors = ButtonDefaults.buttonColors(containerColor = ComicYellow),
                                 border = BorderStroke(1.5.dp, Color.Black),
-                                shape = RoundedCornerShape(8.dp)
+                                shape = RoundedCornerShape(8.dp),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
                             ) {
-                                Text("60 Bulbs", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.Black)
+                                Text(if (playLang == "bn") "৬০ কয়েন" else "60 Coins", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.Black)
                             }
                         }
 
@@ -1506,15 +1508,15 @@ fun HomeScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Column {
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = if (playLang == "bn") "Puzzle Skip Pack (x3)" else "Puzzle Skip Pack (x3)",
+                                    text = if (playLang == "bn") "লেভেল স্কিপ প্যাক (x৩)" else "Puzzle Skip Pack (x3)",
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.Black
                                 )
                                 Text(
-                                    text = if (playLang == "bn") "Instantly auto-pass active level" else "Instantly auto-pass active level",
+                                    text = if (playLang == "bn") "বিদ্যমান লেভেল সরাসরি স্বয়ংক্রিয় পাস করে" else "Instantly auto-pass active level",
                                     fontSize = 10.sp,
                                     color = Color.Gray
                                 )
@@ -1523,9 +1525,44 @@ fun HomeScreen(
                                 onClick = { viewModel.purchaseStoreItemByPoints("skip", 90) },
                                 colors = ButtonDefaults.buttonColors(containerColor = ComicYellow),
                                 border = BorderStroke(1.5.dp, Color.Black),
-                                shape = RoundedCornerShape(8.dp)
+                                shape = RoundedCornerShape(8.dp),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
                             ) {
-                                Text("90 Bulbs", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.Black)
+                                Text(if (playLang == "bn") "৯০ কয়েন" else "90 Coins", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.Black)
+                            }
+                        }
+
+                        // Store Item 5: Restoring Lives
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color.White, RoundedCornerShape(12.dp))
+                                .border(1.5.dp, Color.Black, RoundedCornerShape(12.dp))
+                                .padding(10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = if (playLang == "bn") "সম্পূর্ণ হার্টস রিফিল (৩টি ❤️)" else "Full Hearts Refill (3x ❤️)",
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black
+                                )
+                                Text(
+                                    text = if (playLang == "bn") "সাথে সাথে ৩টি হার্ট/লাইফ পূর্ণ করুন" else "Instantly restore full play lives",
+                                    fontSize = 10.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                            Button(
+                                onClick = { viewModel.purchaseStoreItemByPoints("lives", 40) },
+                                colors = ButtonDefaults.buttonColors(containerColor = ComicYellow),
+                                border = BorderStroke(1.5.dp, Color.Black),
+                                shape = RoundedCornerShape(8.dp),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
+                            ) {
+                                Text(if (playLang == "bn") "৪০ কয়েন" else "40 Coins", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.Black)
                             }
                         }
                     }
@@ -1533,7 +1570,7 @@ fun HomeScreen(
                 confirmButton = {
                     TextButton(onClick = { viewModel.setStoreDialogVisible(false) }) {
                         Text(
-                            text = "BACK TO GAME",
+                            text = if (playLang == "bn") "ফিরে যান" else "BACK TO GAME",
                             color = Color.Black,
                             fontWeight = FontWeight.Black
                         )
@@ -2130,7 +2167,32 @@ fun GameScreen(
                             // Button dynamic style rules
                             val backBgColor = when {
                                 isDimmedByXRay -> Color.LightGray.copy(alpha = 0.5f)
-                                currentQ.type == "ui_trick" && gameState.uiTrickState.labelColorSwap -> ComicYellow
+                                gameState.wrongAnswerIndices.contains(idx) -> ComicSoftPink
+                                currentQ?.level == 9 && !gameState.uiTrickState.labelColorSwap -> {
+                                    when (idx) {
+                                        0 -> Color(0xFFE53935) // Red
+                                        1 -> Color(0xFF1E88E5) // Blue
+                                        2 -> Color(0xFFFFD600) // Yellow
+                                        else -> Color(0xFF4CAF50) // Green
+                                    }
+                                }
+                                currentQ?.level == 53 && !gameState.uiTrickState.labelColorSwap -> {
+                                    when (idx) {
+                                        0 -> Color(0xFFFFD600) // Yellow
+                                        1 -> Color(0xFF00ACC1) // Cyan
+                                        2 -> Color(0xFF4CAF50) // Green
+                                        else -> Color(0xFFE53935) // Red
+                                    }
+                                }
+                                currentQ?.type == "ui_trick" && currentQ.questionEn.contains("YELLOW button", ignoreCase = true) && !gameState.uiTrickState.labelColorSwap -> {
+                                    when (idx) {
+                                        0 -> Color(0xFFE53935) // Red
+                                        1 -> Color(0xFFFFD600) // Yellow
+                                        2 -> Color(0xFF4CAF50) // Green
+                                        else -> Color(0xFF1E88E5) // Blue
+                                    }
+                                }
+                                currentQ?.type == "ui_trick" && gameState.uiTrickState.labelColorSwap -> ComicYellow
                                 idx == 0 && currentQ.type == "ui_trick" -> ComicSoftOrange
                                 idx == 1 && currentQ.type == "ui_trick" -> ComicBlue
                                 else -> Color.White
@@ -2164,7 +2226,7 @@ fun GameScreen(
                                                 color = if (gameState.isXRayActive && idx == currentQ.correctIndex) ComicGreen else Color.Black,
                                                 shape = RoundedCornerShape(14.dp)
                                             )
-                                            .clickable {
+                                            .clickable(enabled = !gameState.wrongAnswerIndices.contains(idx)) {
                                                 if (idx != currentQ.correctIndex) {
                                                     shakeTriggerCount++
                                                 }
@@ -2204,8 +2266,17 @@ fun GameScreen(
                                                 text = if (languageCode == "bn") promptOptionBn else promptOptionEn,
                                                 fontSize = 14.sp,
                                                 fontWeight = FontWeight.Black,
-                                                color = Color.Black
+                                                color = if (currentQ?.level == 9 && !gameState.uiTrickState.labelColorSwap && (idx == 0 || idx == 1)) Color.White else Color.Black
                                             )
+
+                                            if (gameState.wrongAnswerIndices.contains(idx)) {
+                                                Spacer(modifier = Modifier.weight(1f))
+                                                Text(
+                                                    text = "❌",
+                                                    fontSize = 16.sp,
+                                                    modifier = Modifier.padding(end = 6.dp)
+                                                )
+                                            }
                                         }
                                     }
                                 }
@@ -2604,7 +2675,9 @@ fun drawStarSymbol(scope: DrawScope, color: Color) {
 fun AdSimulationOverlay(
     gameState: GameUiState,
     onRestored: () -> Unit,
-    onClose: () -> Unit
+    onBuyWithCoins: () -> Unit,
+    onClose: () -> Unit,
+    languageCode: String
 ) {
     Box(
         modifier = Modifier
@@ -2634,18 +2707,18 @@ fun AdSimulationOverlay(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "⚡ ADVERTISEMENT UNIT ⚡",
-                    fontSize = 14.sp,
+                    text = if (languageCode == "bn") "❤️ হার্টস রিফিল স্টেশন ❤️" else "❤️ HEARTS REFILL STATION ❤️",
+                    fontSize = 15.sp,
                     fontWeight = FontWeight.Black,
                     color = ComicOrange,
-                    letterSpacing = 2.sp
+                    letterSpacing = 1.sp
                 )
 
                 Spacer(modifier = Modifier.height(14.dp))
 
                 Text(
-                    text = "Brain Test Sponsored Offer",
-                    fontSize = 16.sp,
+                    text = if (languageCode == "bn") "আপনার লাইফ বা হার্টস শেষ!" else "Out of Play Lives!",
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Black,
                     color = Color.Black
                 )
@@ -2670,7 +2743,9 @@ fun AdSimulationOverlay(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "You have run out of daily lives! Relax and watch a short sponsored video to restore all your lives for FREE and continue your adventure.",
+                    text = if (languageCode == "bn") 
+                        "আপনার সব হার্ট শেষ হয়ে গেছে! কোনো চিন্তা নেই, নিচে থেকে একদম বিনামূল্যে ফ্রিতে ৩টি হার্ট ক্লেইম করুন অথবা ৪০টি কয়েন খরচ করে প্রিমিয়াম রিফিল বুস্ট ক্লেইম করুন।" 
+                        else "You have run out of play lives! No worries, claim 3 full hearts completely for FREE instantly or spend 40 Coins to purchase a premium refill boost.",
                     fontSize = 13.sp,
                     color = Color.DarkGray,
                     textAlign = TextAlign.Center,
@@ -2680,32 +2755,66 @@ fun AdSimulationOverlay(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                Row(
+                Column(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
+                    // Row for the choice buttons
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Button(
+                            onClick = onRestored,
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(50.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = ComicYellow),
+                            border = BorderStroke(2.dp, Color.Black),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Text(
+                                text = if (languageCode == "bn") "ফ্রি রিফিল ❤️" else "FREE REFILL ❤️", 
+                                fontSize = 11.sp, 
+                                fontWeight = FontWeight.Black, 
+                                color = Color.Black
+                            )
+                        }
+
+                        Button(
+                            onClick = onBuyWithCoins,
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(50.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = ComicOrange),
+                            border = BorderStroke(2.dp, Color.Black),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Text(
+                                text = if (languageCode == "bn") "৪০ কয়েন 🪙" else "40 COINS 🪙", 
+                                fontSize = 11.sp, 
+                                fontWeight = FontWeight.Black, 
+                                color = Color.Black
+                            )
+                        }
+                    }
+
+                    // Cancel / close button
                     Button(
                         onClick = onClose,
                         modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp),
+                            .fillMaxWidth()
+                            .height(45.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.White),
                         border = BorderStroke(2.dp, Color.Black),
                         shape = RoundedCornerShape(12.dp)
                     ) {
-                        Text(text = "CANCEL", fontSize = 12.sp, fontWeight = FontWeight.Black, color = Color.Black)
-                    }
-
-                    Button(
-                        onClick = onRestored,
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = ComicYellow),
-                        border = BorderStroke(2.dp, Color.Black),
-                        shape = RoundedCornerShape(12.dp)
-                    ) {
-                        Text(text = "WATCH (AD)", fontSize = 12.sp, fontWeight = FontWeight.Black, color = Color.Black)
+                        Text(
+                            text = if (languageCode == "bn") "বন্ধ করুন" else "CANCEL", 
+                            fontSize = 12.sp, 
+                            fontWeight = FontWeight.Black, 
+                            color = Color.Black
+                        )
                     }
                 }
             }
