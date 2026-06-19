@@ -70,7 +70,7 @@ class GamePreferences(context: Context) {
         prefs.edit().putBoolean("sound_enabled", enabled).apply()
     }
 
-    fun getLanguage(): String = prefs.getString("language_code", "bn") ?: "bn"
+    fun getLanguage(): String = prefs.getString("language_code", "en") ?: "en"
     fun setLanguage(lang: String) {
         prefs.edit().putString("language_code", lang).apply()
     }
@@ -84,7 +84,7 @@ class GamePreferences(context: Context) {
     }
 
     // Coin system persistence
-    fun getCoins(): Int = prefs.getInt("total_coins", 120) // Start with 120 coins
+    fun getCoins(): Int = prefs.getInt("total_coins", 0) // Start with 0 coins as requested by user
     fun setCoins(amount: Int) {
         prefs.edit().putInt("total_coins", amount).apply()
     }
@@ -434,21 +434,10 @@ object QuestionManager {
      * Maps to hand-crafted curated questions or generates highly clever math, memory, logical and ui traps!
      */
     fun getQuestionForLevel(level: Int): Question {
-        // Stage distribution
-        val stage = when {
-            level <= 50 -> 1
-            level <= 100 -> 2
-            else -> 3
-        }
+        return QuestionDatabase.getQuestionForLevel(level)
+    }
 
-        // Try mapping to curated list first
-        val curated = curatedQuestions.find { it.level == level }
-        if (curated != null) {
-            return curated
-        }
-
-        // Deterministic template configuration to prevent repetitions
-        val templateId = level % 18
+    private fun unusedMethodToPreemptTemplates(level: Int, stage: Int, templateId: Int): Question {
         return when (templateId) {
             0 -> {
                 val num1 = level * 2 + 5
@@ -779,7 +768,7 @@ class GameViewModel(private val context: Context) : ViewModel() {
 
     init {
         SoundManager.setEnabled(prefs.getSoundEnabled())
-        loadLevel(prefs.getCurrentLevel())
+        loadLevel(prefs.getCurrentLevel(), goToGameScreen = false)
     }
 
     // Toggle controllers
@@ -813,13 +802,13 @@ class GameViewModel(private val context: Context) : ViewModel() {
     }
 
     // Load level values
-    fun loadLevel(levelNum: Int) {
-        if (levelNum > 150) {
+    fun loadLevel(levelNum: Int, goToGameScreen: Boolean = true) {
+        if (levelNum > 200) {
             // Congratulate completed game!
             _uiState.update {
                 it.copy(
                     isGameCompleted = true,
-                    currentLevelNumber = 150
+                    currentLevelNumber = 200
                 )
             }
             return
@@ -845,7 +834,7 @@ class GameViewModel(private val context: Context) : ViewModel() {
                 score = prefs.getScore(),
                 coins = prefs.getCoins(),
                 lives = prefs.getLives(),
-                screenType = ScreenType.GAME_SCREEN,
+                screenType = if (goToGameScreen) ScreenType.GAME_SCREEN else _uiState.value.screenType,
                 isXRayActive = false,
                 isBombActive = false,
                 isShieldActive = false,
@@ -858,8 +847,10 @@ class GameViewModel(private val context: Context) : ViewModel() {
             )
         }
 
-        startTimer()
-        startUiTrickTimerIfRequired(question)
+        if (goToGameScreen) {
+            startTimer()
+            startUiTrickTimerIfRequired(question)
+        }
     }
 
     private fun startTimer() {
@@ -952,20 +943,22 @@ class GameViewModel(private val context: Context) : ViewModel() {
             timerJob?.cancel()
             uiTrickTimerJob?.cancel()
 
-            SoundManager.playCorrect()
+            SoundManager.playVictory()
             // Speed bonus
             val speedBonus = if (state.timeLeft >= (state.totalLevelTime - 5)) 5 else 0
             val rewardScore = 10 + speedBonus + 20 // +10 for correct, +20 for level pass, +speedBonus
             val nextScore = state.score + rewardScore
             prefs.setScore(nextScore)
 
-            // Coin system reward (+15 Coins per correct game completed!)
-            val nextCoins = prefs.getCoins() + 15
+            // Level-based coin reward (+10 Coins as base, plus extra coins for higher level milestones)
+            val currentLvl = state.currentLevelNumber
+            val levelBonus = currentLvl / 10
+            val rewardCoins = 10 + levelBonus
+            val nextCoins = prefs.getCoins() + rewardCoins
             prefs.setCoins(nextCoins)
             _coins.value = nextCoins
 
             // Unlock progression
-            val currentLvl = state.currentLevelNumber
             val nextLvl = currentLvl + 1
             prefs.setUnlockedLevel(nextLvl)
             _unlockedLevel.value = prefs.getUnlockedLevel()
@@ -1179,6 +1172,8 @@ class GameViewModel(private val context: Context) : ViewModel() {
             _powerUpsSkip.value = nextVal
             prefs.setPowerUpCount("skip", nextVal)
 
+            SoundManager.playVictory()
+
             // Auto-advance level without penalties!
             val nextLvl = _uiState.value.currentLevelNumber + 1
             prefs.setUnlockedLevel(nextLvl)
@@ -1252,8 +1247,8 @@ class GameViewModel(private val context: Context) : ViewModel() {
         prefs.setCurrentLevel(1)
         prefs.setUnlockedLevel(1)
         prefs.setScore(0)
-        prefs.setCoins(120) // Reset starting coins
-        _coins.value = 120
+        prefs.setCoins(0) // Reset starting coins to 0
+        _coins.value = 0
         prefs.setLives(3)
         prefs.setPowerUpCount("xray", 2)
         prefs.setPowerUpCount("freeze", 2)
@@ -1268,7 +1263,7 @@ class GameViewModel(private val context: Context) : ViewModel() {
         _powerUpsShield.value = 2
         _unlockedLevel.value = 1
 
-        loadLevel(1)
+        loadLevel(1, goToGameScreen = false)
     }
 
     fun setDailyDialogVisible(visible: Boolean) {
@@ -1288,21 +1283,15 @@ class GameViewModel(private val context: Context) : ViewModel() {
     fun claimDailyReward() {
         SoundManager.playCoin()
         val currentCycle = prefs.getClaimDayCycle()
-        val rewardAmount = when (currentCycle) {
-            1 -> 25
-            2 -> 25
-            3 -> 25
-            4 -> 30
-            5 -> 35
-            6 -> 50
-            else -> 200
-        }
+        
+        // As requested: 1 bulb (score) and 10 coins daily
+        val rewardAmount = 1 // 1 bulb
         val currentScore = prefs.getScore()
         val nextScore = currentScore + rewardAmount
         prefs.setScore(nextScore)
         
-        // Award 30 Coins on daily reward too!
-        val nextCoins = prefs.getCoins() + 30
+        // Award 10 Coins on daily reward too!
+        val nextCoins = prefs.getCoins() + 10
         prefs.setCoins(nextCoins)
         _coins.value = nextCoins
 
@@ -1317,7 +1306,7 @@ class GameViewModel(private val context: Context) : ViewModel() {
                 coins = nextCoins,
                 currentClaimDayCycle = nextCycle,
                 hasClaimedToday = true,
-                showToastMsg = if (language.value == "bn") "উপহার ক্লেইম সফল! +$rewardAmount বাল্ব 💡 এবং +৩০ কয়েন 🪙" else "Claim successful! +$rewardAmount Bulbs 💡 and +30 Coins 🪙"
+                showToastMsg = if (language.value == "bn") "উপহার ক্লেইম সফল! +$rewardAmount বাল্ব 💡 এবং +১০ কয়েন 🪙" else "Claim successful! +$rewardAmount Bulbs 💡 and +10 Coins 🪙"
             )
         }
     }
@@ -1334,12 +1323,15 @@ class GameViewModel(private val context: Context) : ViewModel() {
             _uiState.update {
                 it.copy(showToastMsg = if (language.value == "bn") "পর্যাপ্ত কয়েন 🪙 নেই!" else "Not enough Coins 🪙!" )
             }
+            SoundManager.playWrong()
             return
         }
 
         val nextCoins = currentCoins - cost
         prefs.setCoins(nextCoins)
         _coins.value = nextCoins
+
+        SoundManager.playCoin()
 
         if (type == "lives") {
             prefs.setLives(3)
@@ -1350,7 +1342,28 @@ class GameViewModel(private val context: Context) : ViewModel() {
                     showToastMsg = if (language.value == "bn") "আপনার লাইফ পূর্ণ করা হয়েছে! ❤️❤️❤️" else "Full lives restored! ❤️❤️❤️"
                 )
             }
-            loadLevel(_uiState.value.currentLevelNumber)
+            val wasInGame = (_uiState.value.screenType == ScreenType.GAME_SCREEN)
+            loadLevel(_uiState.value.currentLevelNumber, goToGameScreen = wasInGame)
+            return
+        }
+
+        if (type.startsWith("bulb_")) {
+            val bulbsGained = when (type) {
+                "bulb_starter" -> 1
+                "bulb_medium" -> 5
+                "bulb_mega" -> 12
+                else -> 0
+            }
+            val currentScore = prefs.getScore()
+            val nextScore = currentScore + bulbsGained
+            prefs.setScore(nextScore)
+            _uiState.update {
+                it.copy(
+                    score = nextScore,
+                    coins = nextCoins,
+                    showToastMsg = if (language.value == "bn") "$bulbsGained টি বাল্ব কেনা সফল হয়েছে! 💡" else "$bulbsGained Bulbs purchased successfully! 💡"
+                )
+            }
             return
         }
 

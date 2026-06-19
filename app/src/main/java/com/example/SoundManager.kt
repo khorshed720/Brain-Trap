@@ -93,4 +93,26 @@ object SoundManager {
             }
         }.start()
     }
+
+    fun playVictory() {
+        if (!enabled) return
+        Thread {
+            try {
+                val tones = listOf(
+                    Pair(ToneGenerator.TONE_DTMF_3, 100),
+                    Pair(ToneGenerator.TONE_DTMF_5, 100),
+                    Pair(ToneGenerator.TONE_DTMF_8, 100),
+                    Pair(ToneGenerator.TONE_DTMF_D, 200),
+                    Pair(ToneGenerator.TONE_DTMF_3, 100),
+                    Pair(ToneGenerator.TONE_DTMF_D, 400)
+                )
+                for (item in tones) {
+                    toneGenerator?.startTone(item.first, item.second)
+                    Thread.sleep((item.second + 30).toLong())
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
+    }
 }

@@ -4,25 +4,109 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Outer Trap / Retro console border -->
+    
+    <!-- Outer Octagon Cyber Trap (Metallic Grid Base) -->
     <path
-        android:fillColor="#00000000"
+        android:strokeColor="#1E1E38"
+        android:strokeWidth="1.5"
+        android:pathData="M 12 12 L 96 12 L 96 96 L 12 96 Z" />
+    <path
+        android:strokeColor="#1E1E38"
+        android:strokeWidth="1.5"
+        android:pathData="M 12 54 L 96 54" />
+    <path
+        android:strokeColor="#1E1E38"
+        android:strokeWidth="1.5"
+        android:pathData="M 54 12 L 54 96" />
+
+    <!-- Highly Detailed Hexagonal Trap Ring (Primary Neon Red/Pink Glow) -->
+    <path
+        android:fillColor="#15122C"
         android:strokeColor="#E94560"
         android:strokeWidth="4"
-        android:strokeLineCap="round"
         android:strokeLineJoin="round"
-        android:pathData="M30,30h48v48h-48z" />
-    <!-- Glowing Inner Brain / Light Bulb Maze symbol -->
+        android:pathData="M 54 12 L 88 28 L 96 54 L 88 80 L 54 96 L 20 80 L 12 54 L 20 28 Z" />
+
     <path
-        android:fillColor="#EAEAEA"
-        android:pathData="M54,16c-8.8,0 -16,7.2 -16,16 0,5.5 2.8,10.3 7,13.1c2.1,1.4 3.7,3.6 3.7,5.9c0,1,0.8,1.8,1.8,1.8h7c1,0 1.8,-0.8 1.8,-1.8c0,-2.3 1.6,-4.5 3.7,-5.9c4.2,-2.8 7,-7.6 7,-13.1c0,-8.8 -7.2,-16 -16,-16z" />
+        android:strokeColor="#4CC9F0"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:pathData="M 54 19 L 81 32 L 87 54 L 81 76 L 54 89 L 27 76 L 21 54 L 27 32 Z" />
+
+    <!-- Left Cerebral Hemisphere (Luminous Blue/Cyan Lobe Paths) -->
+    <!-- Front Lobe Left -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#4CC9F0"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M 54 32 C 34 26 26 44 36 54" />
+    <!-- Temporal/Occipital Lobe Left -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#4895EF"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M 36 54 C 28 62 36 76 50 74" />
+    <!-- Cerebellar/Limbic folds inside Left -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#EAEAEA"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:pathData="M 50 38 C 40 40 40 50 52 50" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#EAEAEA"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:pathData="M 42 60 C 38 66 48 70 50 64" />
+
+    <!-- Right Cerebral Hemisphere (Luminous Pink/Purple Lobe Paths) -->
+    <!-- Front Lobe Right -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F72585"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M 54 32 C 74 26 82 44 72 54" />
+    <!-- Temporal/Occipital Lobe Right -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#B5179E"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M 72 54 C 80 62 72 76 58 74" />
+    <!-- Cerebellar/Limbic folds inside Right -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#EAEAEA"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:pathData="M 58 38 C 68 40 68 50 56 50" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#EAEAEA"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:pathData="M 66 60 C 70 66 60 70 58 64" />
+
+    <!-- Electro Core central stem (Power Filament) -->
+    <path
+        android:strokeColor="#FFB703"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:pathData="M 54 32 L 54 74" />
+
+    <!-- High intensity synapse discharges (Dots) -->
     <path
         android:fillColor="#FFB703"
-        android:pathData="M48,56 L60,56 C60,57.1 59.1,58 58,58 L50,58 C48.9,58 48,57.1 48,56 Z M50,60 L56,60 L56,62 L50,62 Z" />
-    <!-- A small elegant trap lightning graphic or puzzle piece inside -->
+        android:pathData="M 54 32 A 4 4 0 1 1 53.99 32 Z" />
     <path
-        android:strokeColor="#E94560"
-        android:strokeWidth="3"
-        android:strokeLineCap="round"
-        android:pathData="M54,23 L49,33 L59,33 L54,43" />
+        android:fillColor="#4CC9F0"
+        android:pathData="M 54 53 A 3 3 0 1 1 53.99 53 Z" />
+    <path
+        android:fillColor="#FFB703"
+        android:pathData="M 54 74 A 4 4 0 1 1 53.99 74 Z" />
+
 </vector>

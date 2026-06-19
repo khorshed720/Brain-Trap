@@ -26,9 +26,9 @@ android {
       val keystoreFile = file(keystorePath)
       if (keystoreFile.exists()) {
         storeFile = keystoreFile
-        storePassword = System.getenv("STORE_PASSWORD") ?: ""
+        storePassword = System.getenv("STORE_PASSWORD") ?: "braintrap123"
         keyAlias = System.getenv("KEY_ALIAS") ?: "upload"
-        keyPassword = System.getenv("KEY_PASSWORD") ?: ""
+        keyPassword = System.getenv("KEY_PASSWORD") ?: "braintrap123"
       } else {
         // Fallback to debug configurations if release key is missing
         storeFile = file("${rootDir}/debug.keystore")

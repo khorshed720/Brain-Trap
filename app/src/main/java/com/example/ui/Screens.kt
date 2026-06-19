@@ -29,6 +29,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.*
 import com.example.ui.theme.*
@@ -46,6 +53,9 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 
 // ==========================================
 // 1. SPLASH SCREEN (PULSING LOGO + GLOW)
@@ -201,39 +211,139 @@ private fun drawBrainTrapSymbol(scope: DrawScope, primaryColor: Color, accentCol
     val w = scope.size.width
     val h = scope.size.height
 
-    // Draw outer trap square
-    scope.drawRect(
+    // 1. Draw Tech Trap (Octagonal glowing cybernetic container)
+    val trapPath = androidx.compose.ui.graphics.Path().apply {
+        moveTo(w * 0.5f, h * 0.05f)
+        lineTo(w * 0.85f, h * 0.2f)
+        lineTo(w * 0.95f, h * 0.5f)
+        lineTo(w * 0.85f, h * 0.8f)
+        lineTo(w * 0.5f, h * 0.95f)
+        lineTo(w * 0.15f, h * 0.8f)
+        lineTo(w * 0.05f, h * 0.5f)
+        lineTo(w * 0.15f, h * 0.2f)
+        close()
+    }
+    scope.drawPath(
+        path = trapPath,
+        color = primaryColor.copy(alpha = 0.4f),
+        style = androidx.compose.ui.graphics.drawscope.Stroke(width = 4f)
+    )
+    scope.drawPath(
+        path = trapPath,
+        color = accentColor.copy(alpha = 0.15f),
+        style = androidx.compose.ui.graphics.drawscope.Fill
+    )
+
+    // Inner trap border
+    val innerTrap = androidx.compose.ui.graphics.Path().apply {
+        moveTo(w * 0.5f, h * 0.12f)
+        lineTo(w * 0.80f, h * 0.25f)
+        lineTo(w * 0.88f, h * 0.5f)
+        lineTo(w * 0.80f, h * 0.75f)
+        lineTo(w * 0.5f, h * 0.88f)
+        lineTo(w * 0.20f, h * 0.75f)
+        lineTo(w * 0.12f, h * 0.5f)
+        lineTo(w * 0.20f, h * 0.25f)
+        close()
+    }
+    scope.drawPath(
+        path = innerTrap,
         color = primaryColor,
-        topLeft = androidx.compose.ui.geometry.Offset(w * 0.2f, h * 0.2f),
-        size = androidx.compose.ui.geometry.Size(w * 0.6f, h * 0.6f),
         style = androidx.compose.ui.graphics.drawscope.Stroke(width = 6f)
     )
 
-    // Draw brain bulb core
-    scope.drawCircle(
-        color = textColor,
-        radius = w * 0.18f,
-        center = androidx.compose.ui.geometry.Offset(w * 0.5f, h * 0.45f)
-    )
-
-    // Light filament lightning bolt inside bulb
-    val boltPath = androidx.compose.ui.graphics.Path().apply {
-        moveTo(w * 0.5f, h * 0.33f)
-        lineTo(w * 0.44f, h * 0.46f)
-        lineTo(w * 0.56f, h * 0.46f)
-        lineTo(w * 0.5f, h * 0.58f)
+    // 2. Draw Highly Styled Cyber Brain Left Hemisphere
+    val leftLobe = androidx.compose.ui.graphics.Path().apply {
+        moveTo(w * 0.5f, h * 0.28f)
+        // Upper left curve
+        cubicTo(w * 0.30f, h * 0.22f, w * 0.22f, h * 0.40f, w * 0.32f, h * 0.50f)
+        // Mid left wave
+        cubicTo(w * 0.24f, h * 0.58f, w * 0.32f, h * 0.72f, w * 0.46f, h * 0.70f)
+        // Lower left fold
+        cubicTo(w * 0.48f, h * 0.74f, w * 0.50f, h * 0.74f, w * 0.50f, h * 0.70f)
     }
     scope.drawPath(
-        path = boltPath,
-        color = primaryColor,
-        style = androidx.compose.ui.graphics.drawscope.Stroke(width = 4f, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+        path = leftLobe,
+        color = accentColor,
+        style = androidx.compose.ui.graphics.drawscope.Stroke(width = 8f, cap = androidx.compose.ui.graphics.StrokeCap.Round)
     )
 
-    // Lower thread socket
-    scope.drawRect(
+    // Right Hemisphere
+    val rightLobe = androidx.compose.ui.graphics.Path().apply {
+        moveTo(w * 0.5f, h * 0.28f)
+        // Upper right curve
+        cubicTo(w * 0.70f, h * 0.22f, w * 0.78f, h * 0.40f, w * 0.68f, h * 0.50f)
+        // Mid right wave
+        cubicTo(w * 0.76f, h * 0.58f, w * 0.68f, h * 0.72f, w * 0.54f, h * 0.70f)
+        // Lower right fold
+        cubicTo(w * 0.52f, h * 0.74f, w * 0.50f, h * 0.74f, w * 0.50f, h * 0.70f)
+    }
+    scope.drawPath(
+        path = rightLobe,
         color = accentColor,
-        topLeft = androidx.compose.ui.geometry.Offset(w * 0.43f, h * 0.63f),
-        size = androidx.compose.ui.geometry.Size(w * 0.14f, h * 0.06f)
+        style = androidx.compose.ui.graphics.drawscope.Stroke(width = 8f, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+    )
+
+    // 3. Neural Folds (Cerebral Cortex wrinkles inside left and right hemisphere)
+    val wrinklesLeft = androidx.compose.ui.graphics.Path().apply {
+        moveTo(w * 0.46f, h * 0.34f)
+        cubicTo(w * 0.36f, h * 0.36f, w * 0.36f, h * 0.46f, w * 0.48f, h * 0.46f)
+        moveTo(w * 0.38f, h * 0.52f)
+        cubicTo(w * 0.34f, h * 0.58f, w * 0.44f, h * 0.64f, w * 0.46f, h * 0.58f)
+    }
+    scope.drawPath(
+        path = wrinklesLeft,
+        color = textColor.copy(alpha = 0.85f),
+        style = androidx.compose.ui.graphics.drawscope.Stroke(width = 4.5f, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+    )
+
+    val wrinklesRight = androidx.compose.ui.graphics.Path().apply {
+        moveTo(w * 0.54f, h * 0.34f)
+        cubicTo(w * 0.64f, h * 0.36f, w * 0.64f, h * 0.46f, w * 0.52f, h * 0.46f)
+        moveTo(w * 0.62f, h * 0.52f)
+        cubicTo(w * 0.66f, h * 0.58f, w * 0.56f, h * 0.64f, w * 0.54f, h * 0.58f)
+    }
+    scope.drawPath(
+        path = wrinklesRight,
+        color = textColor.copy(alpha = 0.85f),
+        style = androidx.compose.ui.graphics.drawscope.Stroke(width = 4.5f, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+    )
+
+    // 4. Central Neural Spark Core (Vertical connection line with electric node dots)
+    scope.drawLine(
+        color = primaryColor,
+        start = androidx.compose.ui.geometry.Offset(w * 0.50f, h * 0.28f),
+        end = androidx.compose.ui.geometry.Offset(w * 0.50f, h * 0.70f),
+        strokeWidth = 6f,
+        cap = androidx.compose.ui.graphics.StrokeCap.Round
+    )
+
+    // Synapse Spark Nodes (fusing connection lights)
+    scope.drawCircle(color = primaryColor, radius = w * 0.045f, center = androidx.compose.ui.geometry.Offset(w * 0.50f, h * 0.28f))
+    scope.drawCircle(color = primaryColor, radius = w * 0.045f, center = androidx.compose.ui.geometry.Offset(w * 0.50f, h * 0.70f))
+    scope.drawCircle(color = accentColor, radius = w * 0.035f, center = androidx.compose.ui.geometry.Offset(w * 0.50f, h * 0.48f))
+
+    // Electric lightning bolt discharging inside the trap container
+    val chargePath = androidx.compose.ui.graphics.Path().apply {
+        moveTo(w * 0.50f, h * 0.48f)
+        lineTo(w * 0.32f, h * 0.46f)
+        lineTo(w * 0.24f, h * 0.50f)
+    }
+    scope.drawPath(
+        path = chargePath,
+        color = primaryColor.copy(alpha = 0.8f),
+        style = androidx.compose.ui.graphics.drawscope.Stroke(width = 4.0f, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+    )
+
+    val chargePathRight = androidx.compose.ui.graphics.Path().apply {
+        moveTo(w * 0.50f, h * 0.48f)
+        lineTo(w * 0.68f, h * 0.46f)
+        lineTo(w * 0.76f, h * 0.50f)
+    }
+    scope.drawPath(
+        path = chargePathRight,
+        color = primaryColor.copy(alpha = 0.8f),
+        style = androidx.compose.ui.graphics.drawscope.Stroke(width = 4.0f, cap = androidx.compose.ui.graphics.StrokeCap.Round)
     )
 }
 
@@ -253,16 +363,32 @@ fun ComicCard(
         Box(
             modifier = Modifier
                 .matchParentSize()
-                .offset(x = 4.dp, y = 4.dp)
+                .offset(x = 4.dp, y = 5.dp)
                 .background(Color.Black, shape)
         )
-        // High Contrast Bordered Card
+        // High Contrast Bordered Card with raised base highlight
         Box(
             modifier = Modifier
                 .matchParentSize()
-                .background(backgroundColor, shape)
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            backgroundColor.brighten(0.12f),
+                            backgroundColor,
+                            backgroundColor.darken(0.05f)
+                        )
+                    ),
+                    shape
+                )
                 .border(2.5.dp, Color.Black, shape)
         ) {
+            // High fidelity fine shine line inside card boundary
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .padding(2f.dp)
+                    .border(1.5f.dp, Color.White.copy(alpha = 0.4f), shape)
+            )
             content()
         }
     }
@@ -281,24 +407,63 @@ fun ComicButton(
             .height(58.dp)
             .clickable { onClick() }
     ) {
-        // Shadow Layer
+        // Thick Comic Offset Shadow (Raised Extrusion Look)
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .offset(x = 3.dp, y = 3.dp)
+                .offset(x = 0.dp, y = 5.dp)
                 .background(Color.Black, shape)
         )
-        // Primary Button Surface
-        Row(
+        // 3D Bevel Edge Layer
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(backgroundColor, shape)
+                .offset(y = 2.dp)
+                .background(backgroundColor.darken(0.35f), shape)
                 .border(2.5.dp, Color.Black, shape)
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+        )
+        // Primary Button Surface (Shiny Glossy Gel Gradient)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            backgroundColor.brighten(0.5f),
+                            backgroundColor.brighten(0.1f),
+                            backgroundColor.darken(0.15f)
+                        )
+                    ),
+                    shape
+                )
+                .border(2.5.dp, Color.Black, shape)
         ) {
-            content()
+            // White Gloss shine highlight overlay
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.35f)
+                    .padding(horizontal = 4.dp, vertical = 2.dp)
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.White.copy(alpha = 0.55f),
+                                Color.White.copy(alpha = 0.05f)
+                            )
+                        ),
+                        RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp)
+                    )
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                content()
+            }
         }
     }
 }
@@ -316,19 +481,56 @@ fun ComicCircleButton(
             .size(size)
             .clickable { onClick() }
     ) {
+        // Thick Comic Offset Shadow
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .offset(x = 2.dp, y = 2.dp)
-                .background(Color.Black, CircleShape)
+                .offset(y = 2.dp)
+                .background(ComicShadow, CircleShape)
         )
+        // 3D Bevel Edge base
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(backgroundColor, CircleShape)
-                .border(2.5.dp, Color.Black, CircleShape),
+                .offset(y = 1.dp)
+                .background(backgroundColor.darken(0.35f), CircleShape)
+                .border(1.6.dp, ComicBorder, CircleShape)
+        )
+        // Glossy bubble surface
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            backgroundColor.brighten(0.5f),
+                            backgroundColor.brighten(0.1f),
+                            backgroundColor.darken(0.15f)
+                        )
+                    ),
+                    CircleShape
+                )
+                .border(1.6.dp, ComicBorder, CircleShape),
             contentAlignment = Alignment.Center
         ) {
+            // White highlight reflection gloss bubble
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(0.85f)
+                    .fillMaxHeight(0.35f)
+                    .align(Alignment.TopCenter)
+                    .padding(top = 1.5.dp)
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.White.copy(alpha = 0.6f),
+                                Color.White.copy(alpha = 0.05f)
+                            )
+                        ),
+                        RoundedCornerShape(bottomStart = 50.dp, bottomEnd = 50.dp, topStart = 100.dp, topEnd = 100.dp)
+                    )
+            )
+
             content()
         }
     }
@@ -368,6 +570,126 @@ fun SegmentedProgressBar(
             }
         }
     }
+}
+
+@Composable
+fun InteractiveBackdrop(
+    modifier: Modifier = Modifier,
+    animationTick: Float = 0f
+) {
+    val infiniteTransition = rememberInfiniteTransition(label = "clouds")
+    val waveOffset by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(24000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "CloudWave"
+    )
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFF29B6F6), // Sky Cyan Blue
+                        Color(0xFF0D47A1)  // Classic Royal Blue Deep Space
+                    )
+                )
+            )
+    ) {
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val w = size.width
+            val h = size.height
+
+            // Glowing sun vector rays
+            drawCircle(
+                color = Color.White.copy(alpha = 0.14f),
+                radius = w * 0.45f,
+                center = androidx.compose.ui.geometry.Offset(w * 0.95f, h * 0.1f)
+            )
+            drawCircle(
+                color = Color.White.copy(alpha = 0.07f),
+                radius = w * 0.72f,
+                center = androidx.compose.ui.geometry.Offset(w * 0.95f, h * 0.1f)
+            )
+
+            // Retro tech dots grid
+            val dotSpacing = 32.dp.toPx()
+            var xDot = 0f
+            while (xDot < w) {
+                var yDot = 0f
+                while (yDot < h) {
+                    drawCircle(
+                        color = Color.White.copy(alpha = 0.08f),
+                        radius = 1.8f.dp.toPx(),
+                        center = androidx.compose.ui.geometry.Offset(xDot, yDot)
+                    )
+                    yDot += dotSpacing
+                }
+                xDot += dotSpacing
+            }
+
+            // Cloud positions drifting along Wave Sine-waves
+            val rads = Math.toRadians(waveOffset.toDouble()).toFloat()
+            val moveX1 = kotlin.math.sin(rads) * 35.dp.toPx()
+            val moveX2 = kotlin.math.cos(rads + 1.5f) * 45.dp.toPx()
+            val moveX3 = kotlin.math.sin(rads + 3.0f) * 30.dp.toPx()
+
+            // Cloud A
+            drawCartoonCloud(
+                scope = this,
+                x = w * 0.15f + moveX1,
+                y = h * 0.17f,
+                size = w * 0.16f,
+                opacity = 0.85f
+            )
+
+            // Cloud B
+            drawCartoonCloud(
+                scope = this,
+                x = w * 0.78f + moveX2,
+                y = h * 0.38f,
+                size = w * 0.22f,
+                opacity = 0.75f
+            )
+
+            // Cloud C
+            drawCartoonCloud(
+                scope = this,
+                x = w * 0.42f + moveX3,
+                y = h * 0.82f,
+                size = w * 0.15f,
+                opacity = 0.65f
+            )
+        }
+    }
+}
+
+private fun drawCartoonCloud(
+    scope: DrawScope,
+    x: Float,
+    y: Float,
+    size: Float,
+    opacity: Float
+) {
+    val color = Color.White.copy(alpha = opacity)
+    val r = size * 0.42f
+
+    scope.drawCircle(color, r, androidx.compose.ui.geometry.Offset(x, y))
+    scope.drawCircle(color, r * 1.25f, androidx.compose.ui.geometry.Offset(x + size * 0.35f, y - size * 0.1f))
+    scope.drawCircle(color, r, androidx.compose.ui.geometry.Offset(x + size * 0.68f, y))
+    scope.drawCircle(color, r * 0.8f, androidx.compose.ui.geometry.Offset(x - size * 0.25f, y + size * 0.05f))
+    scope.drawCircle(color, r * 0.8f, androidx.compose.ui.geometry.Offset(x + size * 0.9f, y + size * 0.05f))
+
+    // Filling bottom
+    scope.drawRect(
+        color = color,
+        topLeft = androidx.compose.ui.geometry.Offset(x - size * 0.18f, y),
+        size = androidx.compose.ui.geometry.Size(size * 1.0f, size * 0.28f)
+    )
 }
 
 @Composable
@@ -413,6 +735,18 @@ fun CuteCartoonBrainMascot(
                 color = Color(0xFFFF8DA1),
                 radius = w * 0.15f,
                 center = androidx.compose.ui.geometry.Offset(w * 0.64f, h * 0.6f)
+            )
+
+            // 3D Lobe Gloss shine droplets (Left & Right hemispheres)
+            drawCircle(
+                color = Color.White.copy(alpha = 0.62f),
+                radius = w * 0.045f,
+                center = androidx.compose.ui.geometry.Offset(w * 0.36f, h * 0.37f)
+            )
+            drawCircle(
+                color = Color.White.copy(alpha = 0.62f),
+                radius = w * 0.045f,
+                center = androidx.compose.ui.geometry.Offset(w * 0.64f, h * 0.37f)
             )
 
             // Dynamic Folds wrinkly lines
@@ -563,6 +897,415 @@ fun CuteCartoonBrainMascot(
 }
 
 // ==========================================
+// 1.5 REUSABLE 3D FLOATING NOTEBOOK CONTAINER WITH HIGH-FIDELITY VECTOR STICKERS
+// ==========================================
+@Composable
+fun DrawBackgroundSticker(
+    stickerType: String,
+    modifier: Modifier = Modifier
+) {
+    Canvas(modifier = modifier) {
+        val w = size.width
+        val h = size.height
+        if (w <= 0f || h <= 0f) return@Canvas
+
+        when (stickerType) {
+            "pencil" -> {
+                // Creative Pencil at an angle
+                rotate(-15f, pivot = androidx.compose.ui.geometry.Offset(w / 2f, h / 2f)) {
+                    // Shadow
+                    drawRoundRect(
+                        color = Color(0x1F000000),
+                        topLeft = androidx.compose.ui.geometry.Offset(2.dp.toPx(), 3.dp.toPx()),
+                        size = androidx.compose.ui.geometry.Size(w * 0.35f, h * 0.82f),
+                        cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx())
+                    )
+                    // White sticker paper silhouette backdrop (creates physical cut outline)
+                    drawRoundRect(
+                        color = Color.White,
+                        topLeft = androidx.compose.ui.geometry.Offset(-2.dp.toPx(), -2.dp.toPx()),
+                        size = androidx.compose.ui.geometry.Size(w * 0.35f + 4.dp.toPx(), h * 0.82f + 4.dp.toPx()),
+                        cornerRadius = CornerRadius(6.dp.toPx(), 6.dp.toPx())
+                    )
+                    // Yellow primary pencil body
+                    drawRoundRect(
+                        color = ComicYellow,
+                        topLeft = androidx.compose.ui.geometry.Offset(0f, h * 0.15f),
+                        size = androidx.compose.ui.geometry.Size(w * 0.35f, h * 0.52f),
+                        cornerRadius = CornerRadius(1.dp.toPx(), 1.dp.toPx())
+                    )
+                    // Eraser tip (Retro light pink)
+                    drawRoundRect(
+                        color = Color(0xFFFF9E80),
+                        topLeft = androidx.compose.ui.geometry.Offset(0f, 0f),
+                        size = androidx.compose.ui.geometry.Size(w * 0.35f, h * 0.15f),
+                        cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx())
+                    )
+                    // Metallic band connector
+                    drawRect(
+                        color = Color(0xFFCFD8DC),
+                        topLeft = androidx.compose.ui.geometry.Offset(0f, h * 0.12f),
+                        size = androidx.compose.ui.geometry.Size(w * 0.35f, h * 0.04f)
+                    )
+                    // Wood tip
+                    val woodPath = Path().apply {
+                        moveTo(0f, h * 0.67f)
+                        lineTo(w * 0.35f, h * 0.67f)
+                        lineTo(w * 0.175f, h * 0.85f)
+                        close()
+                    }
+                    drawPath(woodPath, color = Color(0xFFE5C59F))
+                    // Graphite lead tip
+                    val leadPath = Path().apply {
+                        moveTo(w * 0.12f, h * 0.79f)
+                        lineTo(w * 0.23f, h * 0.79f)
+                        lineTo(w * 0.175f, h * 0.85f)
+                        close()
+                    }
+                    drawPath(leadPath, color = ComicBorder)
+
+                    // Stripe lines for drawing details (creates professional 3D form)
+                    drawLine(
+                        color = ComicBorder,
+                        start = androidx.compose.ui.geometry.Offset(w * 0.1f, h * 0.15f),
+                        end = androidx.compose.ui.geometry.Offset(w * 0.1f, h * 0.67f),
+                        strokeWidth = 1f.dp.toPx()
+                    )
+                    drawLine(
+                        color = ComicBorder,
+                        start = androidx.compose.ui.geometry.Offset(w * 0.25f, h * 0.15f),
+                        end = androidx.compose.ui.geometry.Offset(w * 0.25f, h * 0.67f),
+                        strokeWidth = 1f.dp.toPx()
+                    )
+                    // Sticker line outline
+                    drawRoundRect(
+                        color = ComicBorder,
+                        topLeft = androidx.compose.ui.geometry.Offset(0f, 0f),
+                        size = androidx.compose.ui.geometry.Size(w * 0.35f, h * 0.67f),
+                        style = Stroke(width = 1.6.dp.toPx()),
+                        cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx())
+                    )
+                }
+            }
+            "brain" -> {
+                // Smart Brain Mascot Sticker
+                val centerOffset = androidx.compose.ui.geometry.Offset(w / 2f, h / 2f)
+                // Shadow
+                drawCircle(Color(0x1F000000), radius = w * 0.42f, center = androidx.compose.ui.geometry.Offset(w / 2f + 2.dp.toPx(), h / 2f + 3.dp.toPx()))
+                // White outer die-cut border
+                drawCircle(Color.White, radius = w * 0.42f + 2.dp.toPx(), center = centerOffset)
+                drawCircle(Color.White, radius = w * 0.28f, center = androidx.compose.ui.geometry.Offset(w * 0.35f, h * 0.42f))
+                drawCircle(Color.White, radius = w * 0.28f, center = androidx.compose.ui.geometry.Offset(w * 0.65f, h * 0.42f))
+                drawCircle(Color.White, radius = w * 0.24f, center = androidx.compose.ui.geometry.Offset(w * 0.5f, h * 0.68f))
+
+                // Pink Brain Lobes
+                drawCircle(ComicSoftPink, radius = w * 0.26f, center = androidx.compose.ui.geometry.Offset(w * 0.35f, h * 0.42f))
+                drawCircle(ComicSoftPink, radius = w * 0.26f, center = androidx.compose.ui.geometry.Offset(w * 0.65f, h * 0.42f))
+                drawCircle(ComicSoftPink, radius = w * 0.18f, center = androidx.compose.ui.geometry.Offset(w * 0.26f, h * 0.58f))
+                drawCircle(ComicSoftPink, radius = w * 0.18f, center = androidx.compose.ui.geometry.Offset(w * 0.74f, h * 0.58f))
+                drawCircle(ComicSoftPink, radius = w * 0.22f, center = androidx.compose.ui.geometry.Offset(w * 0.5f, h * 0.66f))
+
+                // Fissure outline
+                drawLine(
+                    color = ComicBorder,
+                    start = androidx.compose.ui.geometry.Offset(w * 0.5f, h * 0.26f),
+                    end = androidx.compose.ui.geometry.Offset(w * 0.5f, h * 0.72f),
+                    strokeWidth = 1.5.dp.toPx(),
+                    cap = StrokeCap.Round
+                )
+                // Creative creases
+                val p1 = Path().apply {
+                    moveTo(w * 0.34f, h * 0.35f)
+                    quadraticTo(w * 0.42f, h * 0.42f, w * 0.34f, h * 0.5f)
+                }
+                drawPath(p1, color = ComicBorder, style = Stroke(width = 1.2.dp.toPx(), cap = StrokeCap.Round))
+
+                val p2 = Path().apply {
+                    moveTo(w * 0.66f, h * 0.35f)
+                    quadraticTo(w * 0.58f, h * 0.42f, w * 0.66f, h * 0.5f)
+                }
+                drawPath(p2, color = ComicBorder, style = Stroke(width = 1.2.dp.toPx(), cap = StrokeCap.Round))
+
+                // Glasses
+                val glassY = h * 0.46f
+                val glassR = w * 0.11f
+                drawCircle(Color.White.copy(alpha = 0.6f), radius = glassR, center = androidx.compose.ui.geometry.Offset(w * 0.35f, glassY))
+                drawCircle(ComicBorder, radius = glassR, center = androidx.compose.ui.geometry.Offset(w * 0.35f, glassY), style = Stroke(width = 1.5.dp.toPx()))
+                
+                drawCircle(Color.White.copy(alpha = 0.6f), radius = glassR, center = androidx.compose.ui.geometry.Offset(w * 0.65f, glassY))
+                drawCircle(ComicBorder, radius = glassR, center = androidx.compose.ui.geometry.Offset(w * 0.65f, glassY), style = Stroke(width = 1.5.dp.toPx()))
+
+                drawLine(
+                    color = ComicBorder,
+                    start = androidx.compose.ui.geometry.Offset(w * 0.41f, glassY),
+                    end = androidx.compose.ui.geometry.Offset(w * 0.59f, glassY),
+                    strokeWidth = 1.8.dp.toPx()
+                )
+            }
+            "bulb" -> {
+                // Glowing vector Idea lightbulb
+                val pivotX = w * 0.5f
+                val pivotY = h * 0.4f
+                rotate(8f, pivot = androidx.compose.ui.geometry.Offset(w / 2f, h / 2f)) {
+                    // Shadow
+                    drawCircle(Color(0x1F000000), radius = w * 0.28f, center = androidx.compose.ui.geometry.Offset(pivotX + 2.dp.toPx(), pivotY + 2.dp.toPx()))
+                    // White outline
+                    drawCircle(Color.White, radius = w * 0.28f + 3.dp.toPx(), center = androidx.compose.ui.geometry.Offset(pivotX, pivotY))
+                    drawRoundRect(
+                        color = Color.White,
+                        topLeft = androidx.compose.ui.geometry.Offset(w * 0.36f - 2.dp.toPx(), h * 0.56f - 2.dp.toPx()),
+                        size = androidx.compose.ui.geometry.Size(w * 0.28f + 4.dp.toPx(), h * 0.22f + 4.dp.toPx()),
+                        cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx())
+                    )
+
+                    // Yellow Glowing Glass
+                    drawCircle(ComicYellow, radius = w * 0.28f, center = androidx.compose.ui.geometry.Offset(pivotX, pivotY))
+                    // Highlight reflection
+                    drawCircle(Color.White.copy(alpha = 0.5f), radius = w * 0.07f, center = androidx.compose.ui.geometry.Offset(pivotX - w * 0.11f, pivotY - h * 0.11f))
+
+                    // Base thread
+                    drawRoundRect(
+                        color = Color(0xFFCFD8DC),
+                        topLeft = androidx.compose.ui.geometry.Offset(w * 0.36f, h * 0.56f),
+                        size = androidx.compose.ui.geometry.Size(w * 0.28f, h * 0.14f),
+                        cornerRadius = CornerRadius(2.dp.toPx(), 2.dp.toPx())
+                    )
+                    // Connection contact tip
+                    drawRoundRect(
+                        color = ComicBorder,
+                        topLeft = androidx.compose.ui.geometry.Offset(w * 0.43f, h * 0.7f),
+                        size = androidx.compose.ui.geometry.Size(w * 0.14f, h * 0.05f),
+                        cornerRadius = CornerRadius(1.dp.toPx(), 1.dp.toPx())
+                    )
+                    // Filament lines
+                    val filaments = Path().apply {
+                        moveTo(w * 0.45f, h * 0.56f)
+                        lineTo(w * 0.45f, h * 0.45f)
+                        lineTo(w * 0.48f, h * 0.38f)
+                        lineTo(w * 0.52f, h * 0.38f)
+                        lineTo(w * 0.55f, h * 0.45f)
+                        lineTo(w * 0.55f, h * 0.56f)
+                    }
+                    drawPath(filaments, color = ComicBorder, style = Stroke(width = 1.2.dp.toPx(), cap = StrokeCap.Round))
+
+                    // Sparking ray lines (Golden Idea energy!)
+                    val radiusRay = w * 0.36f
+                    for (i in 0 until 5) {
+                        val angle = Math.toRadians((i * 45 - 180 + 45).toDouble())
+                        val cosVal = kotlin.math.cos(angle).toFloat()
+                        val sinVal = kotlin.math.sin(angle).toFloat()
+                        drawLine(
+                            color = ComicYellow,
+                            start = androidx.compose.ui.geometry.Offset(pivotX + cosVal * radiusRay, pivotY + sinVal * radiusRay),
+                            end = androidx.compose.ui.geometry.Offset(pivotX + cosVal * (radiusRay + 6.dp.toPx()), pivotY + sinVal * (radiusRay + 6.dp.toPx())),
+                            strokeWidth = 2.dp.toPx(),
+                            cap = StrokeCap.Round
+                        )
+                    }
+
+                    // Outer bulb stroke
+                    drawCircle(ComicBorder, radius = w * 0.28f, center = androidx.compose.ui.geometry.Offset(pivotX, pivotY), style = Stroke(width = 1.5.dp.toPx()))
+                }
+            }
+            "question" -> {
+                // Playful 3D-styled Blue Question Mark Sticker
+                rotate(-10f, pivot = androidx.compose.ui.geometry.Offset(w / 2f, h / 2f)) {
+                    // Shadow
+                    drawCircle(Color(0x1F000000), radius = w * 0.34f, center = androidx.compose.ui.geometry.Offset(w / 2f + 2.dp.toPx(), h / 2f + 2.dp.toPx()))
+                    // White silhouette
+                    drawCircle(Color.White, radius = w * 0.34f + 2.dp.toPx(), center = androidx.compose.ui.geometry.Offset(w / 2f, h / 2f))
+
+                    val outlinePaint = android.graphics.Paint().apply {
+                        color = android.graphics.Color.parseColor("#232B35")
+                        textSize = h * 0.82f
+                        isFakeBoldText = true
+                        textAlign = android.graphics.Paint.Align.CENTER
+                        typeface = android.graphics.Typeface.DEFAULT_BOLD
+                        style = android.graphics.Paint.Style.STROKE
+                        strokeWidth = 3.dp.toPx()
+                    }
+                    val bodyPaint = android.graphics.Paint().apply {
+                        color = android.graphics.Color.parseColor("#3B82F6")
+                        textSize = h * 0.82f
+                        isFakeBoldText = true
+                        textAlign = android.graphics.Paint.Align.CENTER
+                        typeface = android.graphics.Typeface.DEFAULT_BOLD
+                    }
+
+                    drawContext.canvas.nativeCanvas.drawText("?", w * 0.50f, h * 0.76f, outlinePaint)
+                    drawContext.canvas.nativeCanvas.drawText("?", w * 0.50f, h * 0.76f, bodyPaint)
+                }
+            }
+            "stars" -> {
+                // Sparkly overlapping cartoon star graphics
+                val starBig = Path().apply {
+                    val cx = w * 0.44f
+                    val cy = h * 0.44f
+                    val rOuter = w * 0.34f
+                    val rInner = w * 0.14f
+                    for (i in 0 until 10) {
+                        val angle = i * Math.PI / 5f - Math.PI / 2f
+                        val r = if (i % 2 == 0) rOuter else rInner
+                        val px = cx + r * kotlin.math.cos(angle).toFloat()
+                        val py = cy + r * kotlin.math.sin(angle).toFloat()
+                        if (i == 0) moveTo(px, py) else lineTo(px, py)
+                    }
+                    close()
+                }
+                val starSmall = Path().apply {
+                    val cx = w * 0.76f
+                    val cy = h * 0.74f
+                    val rOuter = w * 0.18f
+                    val rInner = w * 0.08f
+                    for (i in 0 until 10) {
+                        val angle = i * Math.PI / 5f - Math.PI / 2f
+                        val r = if (i % 2 == 0) rOuter else rInner
+                        val px = cx + r * kotlin.math.cos(angle).toFloat()
+                        val py = cy + r * kotlin.math.sin(angle).toFloat()
+                        if (i == 0) moveTo(px, py) else lineTo(px, py)
+                    }
+                    close()
+                }
+
+                // Shadow
+                drawPath(starBig, Color(0x13000000))
+                
+                // White outer borders
+                drawPath(starBig, Color.White, style = Stroke(width = 5.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round))
+                drawPath(starSmall, Color.White, style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round))
+                
+                // Base fills
+                drawPath(starBig, Color.White)
+                drawPath(starSmall, Color.White)
+                drawPath(starBig, ComicYellow)
+                drawPath(starSmall, ComicPurple)
+
+                // Detail Stroke outline (Soft charcoal)
+                drawPath(starBig, ComicBorder, style = Stroke(width = 1.5.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round))
+                drawPath(starSmall, ComicBorder, style = Stroke(width = 1.2.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round))
+            }
+        }
+    }
+}
+
+@Composable
+fun FloatingNotebookPaper(
+    modifier: Modifier = Modifier,
+    content: @Composable BoxScope.() -> Unit
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        InteractiveBackdrop()
+
+        // Floating Notebook Page with 3D margins
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.systemBars)
+                .padding(10.dp)
+        ) {
+            // Shadow Layer - Changed from heavy Solid Black to elegant translucent ComicShadow
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .offset(x = 5.dp, y = 6.dp)
+                    .background(ComicShadow, RoundedCornerShape(24.dp))
+            )
+            // 3D lip/bevel of paper page - Softened line stroke and color
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .offset(y = 2.dp)
+                    .background(Color(0xFFEBE8CF), RoundedCornerShape(24.dp))
+                    .border(1.8.dp, ComicBorder, RoundedCornerShape(24.dp))
+            )
+            // Cream Paper Sheet
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(ComicPaperBg, RoundedCornerShape(24.dp))
+                    .border(1.8.dp, ComicBorder, RoundedCornerShape(24.dp))
+                    .clip(RoundedCornerShape(24.dp))
+            ) {
+                // Handbound notebook ruled grid lines drawn inside
+                Canvas(modifier = Modifier.fillMaxSize()) {
+                    val gridStep = 24.dp.toPx()
+                    val lineColor = GrayLine
+
+                    // Horizontal lines
+                    var y = 0f
+                    while (y < size.height) {
+                        drawLine(
+                            color = lineColor,
+                            start = androidx.compose.ui.geometry.Offset(0f, y),
+                            end = androidx.compose.ui.geometry.Offset(size.width, y),
+                            strokeWidth = 0.8f
+                        )
+                        y += gridStep
+                    }
+
+                    // Left Crimson style margins line
+                    drawLine(
+                        color = Color(0xFFFFC0C0), // Slightly softer margin line
+                        start = androidx.compose.ui.geometry.Offset(34.dp.toPx(), 0f),
+                        end = androidx.compose.ui.geometry.Offset(34.dp.toPx(), size.height),
+                        strokeWidth = 2f
+                    )
+                }
+
+                // --- PREMIUM ILLUSTRATED STICKER OVERLAYS ---
+                // Left vertical margin decoration (Pencil)
+                DrawBackgroundSticker(
+                    stickerType = "pencil",
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(start = 12.dp, top = 88.dp)
+                        .size(36.dp)
+                )
+                // Middle-Right border (Playful Question Mark)
+                DrawBackgroundSticker(
+                    stickerType = "question",
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(end = 12.dp)
+                        .offset(y = (-40).dp)
+                        .size(40.dp)
+                )
+                // Left Mid-Bottom (Magic Sparkles)
+                DrawBackgroundSticker(
+                    stickerType = "stars",
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(start = 10.dp)
+                        .offset(y = 120.dp)
+                        .size(36.dp)
+                )
+                // Bottom-Right border corner decoration (Inspiration Bulb)
+                DrawBackgroundSticker(
+                    stickerType = "bulb",
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 20.dp, bottom = 45.dp)
+                        .size(42.dp)
+                )
+                // Bottom-Left corner (Smart mascot Brain)
+                DrawBackgroundSticker(
+                    stickerType = "brain",
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(start = 14.dp, bottom = 125.dp)
+                        .size(46.dp)
+                )
+
+                content()
+            }
+        }
+    }
+}
+
+// ==========================================
 // 2. HOME SCREEN (PLAY, LEVEL SEARCH, SETTINGS, DAILY GIFT, STORE)
 // ==========================================
 @OptIn(ExperimentalMaterial3Api::class)
@@ -611,47 +1354,16 @@ fun HomeScreen(
         label = "mascotTick"
     )
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(ComicPaperBg)
-    ) {
-        // High Quality Hand-drawn Notebook Sheet Lines drawing
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            val gridStep = 26.dp.toPx()
-            val lineColor = GrayLine // Notebook rule lines (warm cream)
-
-            // Horizontal lines
-            var y = 0f
-            while (y < size.height) {
-                drawLine(
-                    color = lineColor,
-                    start = androidx.compose.ui.geometry.Offset(0f, y),
-                    end = androidx.compose.ui.geometry.Offset(size.width, y),
-                    strokeWidth = 1f
-                )
-                y += gridStep
-            }
-
-            // Left Crimson book bound margin
-            drawLine(
-                color = Color(0xFFFFB3B3),
-                start = androidx.compose.ui.geometry.Offset(42.dp.toPx(), 0f),
-                end = androidx.compose.ui.geometry.Offset(42.dp.toPx(), size.height),
-                strokeWidth = 2.5f
-            )
-        }
-
+    FloatingNotebookPaper {
         // Action Column Elements
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp)
-                .windowInsetsPadding(WindowInsets.statusBars),
+                .padding(horizontal = 14.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(18.dp))
+            Spacer(modifier = Modifier.height(14.dp))
 
             // Action Row: Controls + Wallet Display
             Row(
@@ -689,41 +1401,65 @@ fun HomeScreen(
                     }
                 }
 
-                // Bulbs Wallet Chip (Simulated Points wallet)
-                Box(
-                    modifier = Modifier
-                        .height(42.dp)
-                        .background(Color.White, RoundedCornerShape(21.dp))
-                        .border(2.5.dp, Color.Black, RoundedCornerShape(21.dp))
-                        .padding(horizontal = 14.dp),
-                    contentAlignment = Alignment.Center
+                // Bulbs & Coins indicators row
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    // Bulbs Wall
+                    Box(
+                        modifier = Modifier
+                            .height(42.dp)
+                            .background(Color.White, RoundedCornerShape(21.dp))
+                            .border(2.5.dp, Color.Black, RoundedCornerShape(21.dp))
+                            .padding(horizontal = 12.dp),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = "Score",
-                            modifier = Modifier.size(18.dp),
-                            tint = ComicYellow
-                        )
-                        Text(
-                            text = "${uiState.score}",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = Color.Black
-                        )
-                        // Add package store clicker (+ button)
-                        Box(
-                            modifier = Modifier
-                                .size(20.dp)
-                                .background(ComicYellow, CircleShape)
-                                .border(1.dp, Color.Black, CircleShape)
-                                .clickable { viewModel.setStoreDialogVisible(true) },
-                            contentAlignment = Alignment.Center
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
-                            Text("+", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.Black)
+                            Text("💡", fontSize = 15.sp)
+                            Text(
+                                text = "${uiState.score}",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = Color.Black
+                            )
+                        }
+                    }
+
+                    // Coins wallet chip + Package clicker
+                    Box(
+                        modifier = Modifier
+                            .height(42.dp)
+                            .background(Color.White, RoundedCornerShape(21.dp))
+                            .border(2.5.dp, Color.Black, RoundedCornerShape(21.dp))
+                            .clickable { viewModel.setStoreDialogVisible(true) }
+                            .padding(start = 12.dp, end = 8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            Text("🪙", fontSize = 15.sp)
+                            Text(
+                                text = "${uiState.coins}",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = Color(0xFFFFB300)
+                            )
+                            // Plus button inside coins indicator
+                            Box(
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .background(ComicYellow, CircleShape)
+                                    .border(1.dp, Color.Black, CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text("+", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.Black)
+                            }
                         }
                     }
                 }
@@ -761,14 +1497,14 @@ fun HomeScreen(
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    // Progress bar mapping current progression fraction up to 150 tasks
-                    val progressFraction = (score.toFloat() / 150f).coerceIn(0f, 1f)
+                    // Progress bar mapping current progression fraction up to 200 tasks
+                    val progressFraction = (score.toFloat() / 200f).coerceIn(0f, 1f)
                     SegmentedProgressBar(progress = progressFraction)
 
                     Spacer(modifier = Modifier.height(6.dp))
 
                     Text(
-                        text = if (playLang == "bn") "সর্বোচ্চ আনলকড লেভেল: $score/১৫০" else "Unlocked: $score/150 Levels",
+                        text = if (playLang == "bn") "সর্বোচ্চ আনলকড লেভেল: $score/২০০" else "Unlocked: $score/200 Levels",
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Gray
@@ -1231,7 +1967,7 @@ fun HomeScreen(
                                 Box(
                                     modifier = Modifier
                                         .weight(1f)
-                                        .aspectRatio(0.8f)
+                                        .aspectRatio(0.85f)
                                         .background(baseBg.copy(alpha = opacity), RoundedCornerShape(10.dp))
                                         .border(2.dp, Color.Black, RoundedCornerShape(10.dp))
                                         .padding(4.dp),
@@ -1239,22 +1975,16 @@ fun HomeScreen(
                                 ) {
                                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                         Text("D$dayNum", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.Black)
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Icon(
-                                            imageVector = Icons.Default.Star,
-                                            contentDescription = "Bulb",
-                                            modifier = Modifier.size(16.dp),
-                                            tint = ComicYellow
-                                        )
+                                        Spacer(modifier = Modifier.height(2.dp))
+                                        Text("💡", fontSize = 14.sp)
                                         Spacer(modifier = Modifier.height(2.dp))
                                         Text(
-                                            text = when (dayNum) {
-                                                4 -> "+30"
-                                                else -> "+25"
-                                            },
-                                            fontSize = 9.sp,
+                                            text = if (playLang == "bn") "+১ বাল্ব\n+১০ কয়েন" else "+1 Bulb\n+10 Coins",
+                                            fontSize = 7.5.sp,
+                                            lineHeight = 9.sp,
                                             fontWeight = FontWeight.Black,
-                                            color = Color.Black
+                                            color = Color.Black,
+                                            textAlign = TextAlign.Center
                                         )
                                     }
                                 }
@@ -1273,7 +2003,7 @@ fun HomeScreen(
                                 Box(
                                     modifier = Modifier
                                         .weight(1f)
-                                        .aspectRatio(1f)
+                                        .aspectRatio(1.1f)
                                         .background(baseBg.copy(alpha = opacity), RoundedCornerShape(10.dp))
                                         .border(2.dp, Color.Black, RoundedCornerShape(10.dp))
                                         .padding(4.dp),
@@ -1286,23 +2016,16 @@ fun HomeScreen(
                                             fontWeight = FontWeight.Bold,
                                             color = Color.Black
                                         )
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Icon(
-                                            imageVector = Icons.Default.Star,
-                                            contentDescription = "Bulb",
-                                            modifier = Modifier.size(18.dp),
-                                            tint = if (dayNum == 7) ComicOrange else ComicYellow
-                                        )
+                                        Spacer(modifier = Modifier.height(2.dp))
+                                        Text(if (dayNum == 7) "💡🎁" else "💡", fontSize = 14.sp)
                                         Spacer(modifier = Modifier.height(2.dp))
                                         Text(
-                                            text = when (dayNum) {
-                                                5 -> "+35"
-                                                6 -> "+50"
-                                                else -> "+200"
-                                            },
-                                            fontSize = 10.sp,
+                                            text = if (playLang == "bn") "+১ বাল্ব\n+১০ কয়েন" else "+1 Bulb\n+10 Coins",
+                                            fontSize = 8.sp,
+                                            lineHeight = 10.sp,
                                             fontWeight = FontWeight.Black,
-                                            color = Color.Black
+                                            color = Color.Black,
+                                            textAlign = TextAlign.Center
                                         )
                                     }
                                 }
@@ -1394,8 +2117,158 @@ fun HomeScreen(
                 text = {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(10.dp),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.65f) // Restrict height slightly so it does not overflow screen
+                            .verticalScroll(androidx.compose.foundation.rememberScrollState())
                     ) {
+                        if (uiState.showToastMsg != null) {
+                            val isSuccess = !uiState.showToastMsg!!.contains("পর্যাপ্ত") && !uiState.showToastMsg!!.contains("Not enough")
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(
+                                        if (isSuccess) Color(0xFFE8F5E9) else Color(0xFFFFEBEE),
+                                        RoundedCornerShape(8.dp)
+                                    )
+                                    .border(
+                                        1.5.dp,
+                                        if (isSuccess) Color(0xFF4CAF50) else Color(0xFFEF5350),
+                                        RoundedCornerShape(8.dp)
+                                    )
+                                    .padding(vertical = 8.dp, horizontal = 12.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = uiState.showToastMsg!!,
+                                    color = if (isSuccess) Color(0xFF2E7D32) else Color(0xFFC62828),
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
+
+                        // Idea / Bulb Store Packages
+                        Text(
+                            text = if (playLang == "bn") "💡 আইডিয়া বা বাল্ব প্যাকেজসমূহ" else "💡 Idea & Bulb Packages",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Black,
+                            color = Color.Black,
+                            modifier = Modifier.padding(top = 4.dp, bottom = 2.dp)
+                        )
+
+                        // Bulb Item 1: Starter
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color(0xFFEFFFFA), RoundedCornerShape(12.dp))
+                                .border(1.5.dp, Color.Black, RoundedCornerShape(12.dp))
+                                .padding(10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = if (playLang == "bn") "স্টার্টার আইডিয়া (১x 💡)" else "Starter Idea (1x 💡)",
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black
+                                )
+                                Text(
+                                    text = if (playLang == "bn") "১টি নির্দেশ বা ইঙ্গিত দেখতে" else "1 bulb helper for quick tricks",
+                                    fontSize = 10.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                            Button(
+                                onClick = { viewModel.purchaseStoreItemByPoints("bulb_starter", 15) },
+                                colors = ButtonDefaults.buttonColors(containerColor = ComicOrange),
+                                border = BorderStroke(1.5.dp, Color.Black),
+                                shape = RoundedCornerShape(8.dp),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
+                            ) {
+                                Text(if (playLang == "bn") "১৫ কয়েন" else "15 Coins", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.White)
+                            }
+                        }
+
+                        // Bulb Item 2: Medium
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color(0xFFFFFEE5), RoundedCornerShape(12.dp))
+                                .border(1.5.dp, Color.Black, RoundedCornerShape(12.dp))
+                                .padding(10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = if (playLang == "bn") "মিডিয়াম প্যাক (৫x 💡)" else "Medium Pack (5x 💡)",
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black
+                                )
+                                Text(
+                                    text = if (playLang == "bn") "৫টি সলভার বাল্ব (২০% লাভ!)" else "5 bulbs helper pack (20% off!)",
+                                    fontSize = 10.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                            Button(
+                                onClick = { viewModel.purchaseStoreItemByPoints("bulb_medium", 60) },
+                                colors = ButtonDefaults.buttonColors(containerColor = ComicOrange),
+                                border = BorderStroke(1.5.dp, Color.Black),
+                                shape = RoundedCornerShape(8.dp),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
+                            ) {
+                                Text(if (playLang == "bn") "৬০ কয়েন" else "60 Coins", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.White)
+                            }
+                        }
+
+                        // Bulb Item 3: Mega
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color(0xFFFFEEFF), RoundedCornerShape(12.dp))
+                                .border(1.5.dp, Color.Black, RoundedCornerShape(12.dp))
+                                .padding(10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = if (playLang == "bn") "মেগা প্যাক (১২x 💡)" else "Mega Pack (12x 💡)",
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black
+                                )
+                                Text(
+                                    text = if (playLang == "bn") "১২টি ইঙ্গিত বাল্ব (৩৩% লাভ!)" else "12 bulbs helper pack (33% off!)",
+                                    fontSize = 10.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                            Button(
+                                onClick = { viewModel.purchaseStoreItemByPoints("bulb_mega", 120) },
+                                colors = ButtonDefaults.buttonColors(containerColor = ComicOrange),
+                                border = BorderStroke(1.5.dp, Color.Black),
+                                shape = RoundedCornerShape(8.dp),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
+                            ) {
+                                Text(if (playLang == "bn") "১২০ কয়েন" else "120 Coins", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.White)
+                            }
+                        }
+
+                        // Game Boosters & Powerups Section Title
+                        Text(
+                            text = if (playLang == "bn") "⚡ গেম বুস্টার এবং পাওয়ার প্যাক" else "⚡ Puzzle Power Booster Packs",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Black,
+                            color = Color.Black,
+                            modifier = Modifier.padding(top = 6.dp, bottom = 2.dp)
+                        )
+
                         // Store Item 1: Freeze
                         Row(
                             modifier = Modifier
@@ -1593,49 +2466,19 @@ fun LevelSelectScreen(
     val maxUnlocked by viewModel.unlockedLevel.collectAsState()
     val languageCode by viewModel.language.collectAsState()
 
-    var activeStageTab by remember { mutableIntStateOf(1) } // Tab: 1 (Stage 1), 2 (Stage 2), 3 (Stage 3)
+    var activeStageTab by remember { mutableIntStateOf(1) } // Tab: 1 (Stage 1), 2 (Stage 2), 3 (Stage 3), 4 (Stage 4)
 
     val stageRange = when (activeStageTab) {
         1 -> 1..50
         2 -> 51..100
-        else -> 101..150
+        3 -> 101..150
+        else -> 151..200
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(ComicPaperBg)
-    ) {
-        // Hand-drawn Notebook Sheet Lines drawing
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            val gridStep = 24.dp.toPx()
-            val lineColor = GrayLine // Notebook rule lines (warm cream)
-
-            // Horizontal lines
-            var y = 0f
-            while (y < size.height) {
-                drawLine(
-                    color = lineColor,
-                    start = androidx.compose.ui.geometry.Offset(0f, y),
-                    end = androidx.compose.ui.geometry.Offset(size.width, y),
-                    strokeWidth = 1f
-                )
-                y += gridStep
-            }
-
-            // Left Crimson book bound margin
-            drawLine(
-                color = Color(0xFFFFB3B3),
-                start = androidx.compose.ui.geometry.Offset(42.dp.toPx(), 0f),
-                end = androidx.compose.ui.geometry.Offset(42.dp.toPx(), size.height),
-                strokeWidth = 2.5f
-            )
-        }
-
+    FloatingNotebookPaper {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.statusBars)
         ) {
             // Screen Header Back Bar
             Row(
@@ -1649,7 +2492,12 @@ fun LevelSelectScreen(
                     backgroundColor = ComicYellow,
                     size = 42.dp
                 ) {
-                    Text("⬅", fontSize = 16.sp, fontWeight = FontWeight.Black, color = Color.Black)
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back",
+                        modifier = Modifier.size(20.dp),
+                        tint = Color.Black
+                    )
                 }
 
                 Spacer(modifier = Modifier.width(14.dp))
@@ -1662,11 +2510,12 @@ fun LevelSelectScreen(
                 )
             }
 
-            // Three Stage Cards Tabs
+            // Four Stage Cards Tabs (with horizontal scroll to avoid squishing)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 16.dp)
+                    .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 // Stage 1 Tab
@@ -1676,7 +2525,7 @@ fun LevelSelectScreen(
                     isActive = activeStageTab == 1,
                     activeColor = ComicGreen,
                     onClick = { activeStageTab = 1 },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.width(115.dp)
                 )
 
                 // Stage 2 Tab
@@ -1686,7 +2535,7 @@ fun LevelSelectScreen(
                     isActive = activeStageTab == 2,
                     activeColor = ComicOrange,
                     onClick = { activeStageTab = 2 },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.width(115.dp)
                 )
 
                 // Stage 3 Tab
@@ -1696,7 +2545,17 @@ fun LevelSelectScreen(
                     isActive = activeStageTab == 3,
                     activeColor = ComicPurple,
                     onClick = { activeStageTab = 3 },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.width(115.dp)
+                )
+
+                // Stage 4 Tab
+                StageTabButton(
+                    title = if (languageCode == "bn") "স্টেজ ৪ (১৫১-২০০)" else "Stage 4 (151-200)",
+                    sub = if (languageCode == "bn") "এলিয়েন ব্রেইন" else "Legendary",
+                    isActive = activeStageTab == 4,
+                    activeColor = Color(0xFFFF5252),
+                    onClick = { activeStageTab = 4 },
+                    modifier = Modifier.width(115.dp)
                 )
             }
 
@@ -1704,66 +2563,129 @@ fun LevelSelectScreen(
 
             // Levels scrolling Grid list representation
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(68.dp),
+                columns = GridCells.Adaptive(62.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
                     .padding(horizontal = 16.dp, vertical = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp),
-                horizontalArrangement = Arrangement.spacedBy(14.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(stageRange.toList()) { levelNum ->
                     val isUnlocked = (levelNum <= maxUnlocked)
                     val isCompleted = (levelNum < maxUnlocked)
 
+                    val baseColor = when {
+                        isCompleted -> ComicGreen
+                        isUnlocked -> ComicYellow
+                        else -> Color(0xFFD6D6D6)
+                    }
+
                     Box(
                         modifier = Modifier
                             .aspectRatio(1f)
-                            .background(
-                                color = when {
-                                    isCompleted -> ComicSoftGreen
-                                    isUnlocked -> ComicYellow
-                                    else -> Color.White.copy(alpha = 0.5f)
-                                },
-                                shape = RoundedCornerShape(12.dp)
-                            )
-                            .border(
-                                width = 2.dp,
-                                color = if (isUnlocked) Color.Black else Color.Black.copy(alpha = 0.4f),
-                                shape = RoundedCornerShape(12.dp)
-                            )
                             .clickable(enabled = isUnlocked) {
                                 onLevelSelected(levelNum)
-                            },
-                        contentAlignment = Alignment.Center
+                            }
                     ) {
                         if (isUnlocked) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text(
-                                    text = "$levelNum",
-                                    fontSize = 17.sp,
-                                    fontWeight = FontWeight.Black,
-                                    color = Color.Black
+                            // Bottom 3D shadow extrusion
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .offset(y = 4.dp)
+                                    .background(Color.Black, RoundedCornerShape(12.dp))
+                            )
+                            // 3D Lip/Bevel
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .offset(y = 2.dp)
+                                    .background(baseColor.darken(0.35f), RoundedCornerShape(12.dp))
+                                    .border(2.dp, Color.Black, RoundedCornerShape(12.dp))
+                            )
+                            // Glossy Face
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(
+                                        Brush.verticalGradient(
+                                            colors = listOf(
+                                                baseColor.brighten(0.5f),
+                                                baseColor.brighten(0.1f),
+                                                baseColor.darken(0.15f)
+                                            )
+                                        ),
+                                        shape = RoundedCornerShape(12.dp)
+                                    )
+                                    .border(2.dp, Color.Black, RoundedCornerShape(12.dp)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                // Glare bubble top
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .fillMaxHeight(0.35f)
+                                        .align(Alignment.TopCenter)
+                                        .padding(horizontal = 2.dp, vertical = 2.dp)
+                                        .background(
+                                            Brush.verticalGradient(
+                                                colors = listOf(
+                                                    Color.White.copy(alpha = 0.55f),
+                                                    Color.White.copy(alpha = 0.05f)
+                                                )
+                                            ),
+                                            RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+                                        )
                                 )
-                                Spacer(modifier = Modifier.height(1.dp))
-                                Text(
-                                    text = if (isCompleted) "✓ " else "PLAY",
-                                    fontSize = 9.sp,
-                                    color = Color.Black,
-                                    fontWeight = FontWeight.Black
-                                )
+
+                                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                                    Text(
+                                        text = "$levelNum",
+                                        fontSize = 15.sp,
+                                        fontWeight = FontWeight.Black,
+                                        color = if (isCompleted) Color.White else Color.Black
+                                    )
+                                    if (isCompleted) {
+                                        Icon(
+                                            imageVector = Icons.Default.Check,
+                                            contentDescription = "Completed",
+                                            modifier = Modifier.size(11.dp),
+                                            tint = Color.White
+                                        )
+                                    } else {
+                                        Text(
+                                            text = "PLAY",
+                                            fontSize = 8.sp,
+                                            color = Color.Black.copy(alpha = 0.8f),
+                                            fontWeight = FontWeight.Black
+                                        )
+                                    }
+                                }
                             }
                         } else {
-                            // Locked symbol
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text("🔒", fontSize = 16.sp)
-                                Spacer(modifier = Modifier.height(1.dp))
-                                Text(
-                                    text = "LOCK",
-                                    fontSize = 8.sp,
-                                    color = Color.Black.copy(alpha = 0.5f),
-                                    fontWeight = FontWeight.ExtraBold
-                                )
+                            // Locked Level (flat shadow, recessed visual)
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(Color(0xFFE5E5DF), RoundedCornerShape(12.dp))
+                                    .border(1.5.dp, Color.Black.copy(alpha = 0.25f), RoundedCornerShape(12.dp)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                                    Icon(
+                                        imageVector = Icons.Default.Lock,
+                                        contentDescription = "Locked",
+                                        modifier = Modifier.size(14.dp),
+                                        tint = Color.Black.copy(alpha = 0.25f)
+                                    )
+                                    Text(
+                                        text = "$levelNum",
+                                        fontSize = 10.sp,
+                                        color = Color.Black.copy(alpha = 0.25f),
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
                             }
                         }
                     }
@@ -1861,41 +2783,10 @@ fun GameScreen(
         ComicOrange
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(ComicPaperBg)
-    ) {
-        // Hand-drawn Notebook Sheet Lines drawing
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            val gridStep = 24.dp.toPx()
-            val lineColor = GrayLine // Notebook rule lines (warm cream)
-
-            // Horizontal lines
-            var y = 0f
-            while (y < size.height) {
-                drawLine(
-                    color = lineColor,
-                    start = androidx.compose.ui.geometry.Offset(0f, y),
-                    end = androidx.compose.ui.geometry.Offset(size.width, y),
-                    strokeWidth = 1f
-                )
-                y += gridStep
-            }
-
-            // Left Crimson book bound margin
-            drawLine(
-                color = Color(0xFFFFB3B3),
-                start = androidx.compose.ui.geometry.Offset(42.dp.toPx(), 0f),
-                end = androidx.compose.ui.geometry.Offset(42.dp.toPx(), size.height),
-                strokeWidth = 2.5f
-            )
-        }
-
+    FloatingNotebookPaper {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.statusBars)
         ) {
             // Game Top HUD panel: Lives, Levels, Scores
             Row(
@@ -1918,7 +2809,7 @@ fun GameScreen(
                 Box(
                     modifier = Modifier
                         .background(Color.White, RoundedCornerShape(12.dp))
-                        .border(2.dp, Color.Black, RoundedCornerShape(12.dp))
+                        .border(1.5.dp, ComicBorder, RoundedCornerShape(12.dp))
                         .padding(horizontal = 12.dp, vertical = 6.dp)
                 ) {
                     Text(
@@ -1956,13 +2847,13 @@ fun GameScreen(
                     Box(
                         modifier = Modifier
                             .background(Color.White, RoundedCornerShape(12.dp))
-                            .border(2.dp, Color.Black, RoundedCornerShape(12.dp))
+                            .border(1.5.dp, ComicBorder, RoundedCornerShape(12.dp))
                             .padding(horizontal = 8.dp, vertical = 6.dp)
                     ) {
                         Text(
                             text = "💡 ${gameState.score}",
                             fontWeight = FontWeight.Black,
-                            color = Color.Black,
+                            color = ComicBorder,
                             fontSize = 11.sp
                         )
                     }
@@ -1971,7 +2862,7 @@ fun GameScreen(
                     Box(
                         modifier = Modifier
                             .background(Color.White, RoundedCornerShape(12.dp))
-                            .border(2.dp, Color.Black, RoundedCornerShape(12.dp))
+                            .border(1.5.dp, ComicBorder, RoundedCornerShape(12.dp))
                             .padding(horizontal = 8.dp, vertical = 6.dp)
                     ) {
                         Text(
@@ -1991,7 +2882,7 @@ fun GameScreen(
                     .padding(horizontal = 16.dp)
                     .height(10.dp)
                     .background(Color.White, RoundedCornerShape(5.dp))
-                    .border(2.dp, Color.Black, RoundedCornerShape(5.dp))
+                    .border(1.5.dp, ComicBorder, RoundedCornerShape(5.dp))
             ) {
                 val progressFraction = gameState.timeLeft.toFloat() / gameState.totalLevelTime.toFloat()
                 Box(
@@ -2025,7 +2916,7 @@ fun GameScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 4.dp)
                     .background(Color(0xFFF9F9F9), RoundedCornerShape(16.dp))
-                    .border(2.dp, Color.Black, RoundedCornerShape(16.dp))
+                    .border(1.5.dp, ComicBorder, RoundedCornerShape(16.dp))
                     .padding(horizontal = 10.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
@@ -2096,6 +2987,7 @@ fun GameScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .heightIn(min = 120.dp)
                             .weight(1f)
                             .padding(vertical = 10.dp)
                     ) {
@@ -2103,15 +2995,15 @@ fun GameScreen(
                         Box(
                             modifier = Modifier
                                 .matchParentSize()
-                                .offset(x = 4.dp, y = 4.dp)
-                                .background(Color.Black, RoundedCornerShape(20.dp))
+                                .offset(x = 3.dp, y = 3.dp)
+                                .background(ComicShadow, RoundedCornerShape(20.dp))
                         )
                         // Notebook paper card
                         Box(
                             modifier = Modifier
                                 .matchParentSize()
                                 .background(Color.White, RoundedCornerShape(20.dp))
-                                .border(2.5.dp, Color.Black, RoundedCornerShape(20.dp))
+                                .border(1.8.dp, ComicBorder, RoundedCornerShape(20.dp))
                                 .padding(16.dp),
                             contentAlignment = Alignment.Center
                         ) {
@@ -2202,28 +3094,49 @@ fun GameScreen(
                                 Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .height(54.dp)
                                         .offset(
                                             x = (offset.x + if (gameState.selectedOptionIndex == idx && !gameState.isCorrectAnswer) shakeOffset else 0f).dp,
                                             y = offset.y.dp
                                         )
                                         .scale(scaleModifier)
                                 ) {
-                                    // Custom visual offset shadow click helper
+                                    // Thick 3D Bottom extrusion shadow layer
                                     Box(
                                         modifier = Modifier
                                             .matchParentSize()
-                                            .offset(x = 3.dp, y = 3.dp)
-                                            .background(Color.Black, RoundedCornerShape(14.dp))
+                                            .offset(y = 3.dp)
+                                            .background(ComicShadow, RoundedCornerShape(14.dp))
                                     )
-
+                                    // 3D Lip/Bevel
                                     Box(
                                         modifier = Modifier
                                             .matchParentSize()
-                                            .background(backBgColor, RoundedCornerShape(14.dp))
+                                            .offset(y = 1.5.dp)
+                                            .background(backBgColor.darken(0.35f), RoundedCornerShape(14.dp))
                                             .border(
-                                                width = if (gameState.isXRayActive && idx == currentQ.correctIndex) 3.dp else 2.dp,
-                                                color = if (gameState.isXRayActive && idx == currentQ.correctIndex) ComicGreen else Color.Black,
+                                                width = if (gameState.isXRayActive && idx == currentQ.correctIndex) 2.2.dp else 1.5.dp,
+                                                color = if (gameState.isXRayActive && idx == currentQ.correctIndex) ComicGreen else ComicBorder,
+                                                shape = RoundedCornerShape(14.dp)
+                                            )
+                                    )
+                                    // Primary Glossy Face (Defines the dynamic height of the button)
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .heightIn(min = 54.dp)
+                                            .background(
+                                                Brush.verticalGradient(
+                                                    colors = listOf(
+                                                        backBgColor.brighten(0.5f),
+                                                        backBgColor.brighten(0.1f),
+                                                        backBgColor.darken(0.15f)
+                                                    )
+                                                ),
+                                                shape = RoundedCornerShape(14.dp)
+                                            )
+                                            .border(
+                                                width = if (gameState.isXRayActive && idx == currentQ.correctIndex) 2.2.dp else 1.5.dp,
+                                                color = if (gameState.isXRayActive && idx == currentQ.correctIndex) ComicGreen else ComicBorder,
                                                 shape = RoundedCornerShape(14.dp)
                                             )
                                             .clickable(enabled = !gameState.wrongAnswerIndices.contains(idx)) {
@@ -2232,9 +3145,27 @@ fun GameScreen(
                                                 }
                                                 viewModel.selectOption(idx)
                                             }
-                                            .padding(horizontal = 14.dp),
+                                            .padding(horizontal = 14.dp, vertical = 6.dp),
                                         contentAlignment = Alignment.CenterStart
                                     ) {
+                                        // Glare reflection bubble top
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(18.dp)
+                                                .align(Alignment.TopCenter)
+                                                .padding(horizontal = 2.dp, vertical = 2.dp)
+                                                .background(
+                                                    Brush.verticalGradient(
+                                                        colors = listOf(
+                                                            Color.White.copy(alpha = 0.5f),
+                                                            Color.White.copy(alpha = 0.02f)
+                                                        )
+                                                    ),
+                                                    RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)
+                                                )
+                                        )
+
                                         Row(
                                             modifier = Modifier.fillMaxWidth(),
                                             verticalAlignment = Alignment.CenterVertically
@@ -2242,11 +3173,38 @@ fun GameScreen(
                                             // Bullet letter (A, B, C, D)
                                             Box(
                                                 modifier = Modifier
-                                                    .size(26.dp)
-                                                    .background(ComicBlue, CircleShape)
+                                                    .size(28.dp)
+                                                    .background(
+                                                        Brush.verticalGradient(
+                                                            colors = listOf(
+                                                                ComicBlue.brighten(0.4f),
+                                                                ComicBlue,
+                                                                ComicBlue.darken(0.2f)
+                                                            )
+                                                        ),
+                                                        CircleShape
+                                                    )
                                                     .border(2.dp, Color.Black, CircleShape),
                                                 contentAlignment = Alignment.Center
                                             ) {
+                                                // Gloss shine inside A/B/C/D bullet circular container
+                                                Box(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth(0.9f)
+                                                        .fillMaxHeight(0.35f)
+                                                        .align(Alignment.TopCenter)
+                                                        .padding(top = 1.dp)
+                                                        .background(
+                                                            Brush.verticalGradient(
+                                                                colors = listOf(
+                                                                    Color.White.copy(alpha = 0.6f),
+                                                                    Color.White.copy(alpha = 0.05f)
+                                                                )
+                                                            ),
+                                                            RoundedCornerShape(bottomStart = 50.dp, bottomEnd = 50.dp, topStart = 100.dp, topEnd = 100.dp)
+                                                        )
+                                                )
+
                                                 Text(
                                                     text = when (idx) {
                                                         0 -> "A"
@@ -2264,6 +3222,7 @@ fun GameScreen(
 
                                             Text(
                                                 text = if (languageCode == "bn") promptOptionBn else promptOptionEn,
+                                                modifier = Modifier.weight(1f, fill = false),
                                                 fontSize = 14.sp,
                                                 fontWeight = FontWeight.Black,
                                                 color = if (currentQ?.level == 9 && !gameState.uiTrickState.labelColorSwap && (idx == 0 || idx == 1)) Color.White else Color.Black
@@ -2322,61 +3281,134 @@ fun PowerUpButton(
     onActivate: () -> Unit,
     onRefill: () -> Unit
 ) {
+    val baseColor = when (title) {
+        "X-Ray" -> ComicBlue       // Cyan / light blue
+        "Freeze" -> Color(0xFF00E5FF) // Icy cyan blue
+        "Bomb" -> Color(0xFFFF5252)   // Coral Red
+        "Skip" -> ComicYellow         // Pure Gold Yellow
+        "Shield" -> ComicGreen        // Safe bright green
+        else -> Color.White
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(52.dp)
+        modifier = Modifier.width(54.dp) // Perfect fit
     ) {
         Box(
             modifier = Modifier
-                .size(46.dp)
-                .background(
-                    if (isActive) ComicYellow else Color.White,
-                    RoundedCornerShape(12.dp)
-                )
-                .border(
-                    width = if (isActive) 3.dp else 2.dp,
-                    color = Color.Black,
-                    shape = RoundedCornerShape(12.dp)
-                )
+                .size(48.dp)
                 .clickable {
                     if (count > 0) {
                         onActivate()
                     } else {
                         onRefill()
                     }
-                },
-            contentAlignment = Alignment.Center
+                }
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = title,
-                modifier = Modifier.size(22.dp),
-                tint = Color.Black
-            )
-
-            // Badge with remaining count or dynamic free refill button
+            // Shadow Layer under Button
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(1.dp),
-                contentAlignment = Alignment.BottomEnd
+                    .offset(y = 4.dp)
+                    .background(Color.Black, RoundedCornerShape(14.dp))
+            )
+
+            // Bevel Lip Layer (darker edge)
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .offset(y = 2.dp)
+                    .background(baseColor.darken(0.35f), RoundedCornerShape(14.dp))
+                    .border(
+                        width = if (isActive) 3.dp else 2.dp,
+                        color = Color.Black,
+                        shape = RoundedCornerShape(14.dp)
+                    )
+            )
+
+            // Primary Glossy Tactile Face with high contrast borders
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = if (isActive) {
+                                listOf(
+                                    ComicYellow.brighten(0.5f),
+                                    ComicYellow,
+                                    ComicYellow.darken(0.2f)
+                                )
+                            } else {
+                                listOf(
+                                    baseColor.brighten(0.5f),
+                                    baseColor.brighten(0.1f),
+                                    baseColor.darken(0.15f)
+                                )
+                            }
+                        ),
+                        shape = RoundedCornerShape(14.dp)
+                    )
+                    .border(
+                        width = if (isActive) 3.dp else 2.dp,
+                        color = Color.Black,
+                        shape = RoundedCornerShape(14.dp)
+                    ),
+                contentAlignment = Alignment.Center
             ) {
+                // Spheroid Glare Bubble Overlay (Top gloss curve shine)
                 Box(
                     modifier = Modifier
-                        .background(if (count > 0) ComicOrange else ComicGreen, RoundedCornerShape(4.dp))
-                        .border(1.dp, Color.Black, RoundedCornerShape(4.dp))
-                        .padding(horizontal = 4.dp, vertical = 1.dp)
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.35f)
+                        .align(Alignment.TopCenter)
+                        .padding(horizontal = 2.dp, vertical = 2.dp)
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(
+                                    Color.White.copy(alpha = 0.55f),
+                                    Color.White.copy(alpha = 0.05f)
+                                )
+                            ),
+                            RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)
+                        )
+                )
+
+                // High-contrast clean icon outline
+                Icon(
+                    imageVector = icon,
+                    contentDescription = title,
+                    modifier = Modifier.size(24.dp),
+                    tint = Color.Black
+                )
+
+                // Badge for Remaining Inventory Counts or Refill ("GET") Affordance
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(1.dp),
+                    contentAlignment = Alignment.BottomEnd
                 ) {
-                    Text(
-                        text = if (count > 0) "$count" else "GET",
-                        fontSize = 8.sp,
-                        fontWeight = FontWeight.Black,
-                        color = Color.White
-                    )
+                    Box(
+                        modifier = Modifier
+                            .offset(x = 1.dp, y = 1.dp)
+                            .background(
+                                if (count > 0) ComicOrange else ComicGreen,
+                                RoundedCornerShape(4.dp)
+                            )
+                            .border(1.2.dp, Color.Black, RoundedCornerShape(4.dp))
+                            .padding(horizontal = 4.dp, vertical = 1.dp)
+                    ) {
+                        Text(
+                            text = if (count > 0) "$count" else "GET",
+                            fontSize = 8.sp,
+                            fontWeight = FontWeight.Black,
+                            color = Color.White
+                        )
+                    }
                 }
             }
         }
-        Spacer(modifier = Modifier.height(2.dp))
+        Spacer(modifier = Modifier.height(3.dp))
         Text(
             text = title,
             fontSize = 9.sp,
