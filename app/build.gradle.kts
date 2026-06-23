@@ -50,7 +50,11 @@ android {
       isCrunchPngs = false
       isMinifyEnabled = false
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      signingConfig = signingConfigs.getByName("release")
+      
+      // We set signingConfig to null so that the release build produces an UNSIGNED AAB/APK.
+      // This is perfect for downloading and manually signing using your "AAB Installer" mobile app.
+      // Since you use the same keystore on your phone, you will never face app update or signature issues!
+      signingConfig = null
     }
     debug {
       signingConfig = signingConfigs.getByName("debugConfig")
@@ -108,6 +112,7 @@ dependencies {
   implementation(libs.moshi.kotlin)
   implementation(libs.okhttp)
   // implementation(libs.play.services.location)
+  implementation(libs.play.services.ads)
   implementation(libs.retrofit)
   // implementation(libs.unity.ads)
   testImplementation(libs.androidx.compose.ui.test.junit4)

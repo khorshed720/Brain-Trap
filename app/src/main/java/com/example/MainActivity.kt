@@ -45,8 +45,18 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Offer App Open Ads on application foreground resume
+        AdManager.showAppOpenAdIfAvailable(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Initialize Google AdMob Mobile Ads SDK and pre-load ads
+        AdManager.initialize(this)
+        
         enableEdgeToEdge()
 
         val mainHandler = android.os.Handler(android.os.Looper.getMainLooper())
@@ -117,6 +127,10 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
                         containerColor = DarkBg,
+                        bottomBar = {
+                            // Anchor standard adaptive banner ad at the bottom of the screens
+                            AdBannerView(modifier = Modifier.fillMaxWidth())
+                        }
                     ) { innerPadding ->
                         Box(
                             modifier = Modifier
@@ -135,6 +149,8 @@ class MainActivity : ComponentActivity() {
                                     ScreenType.SPLASH_SCREEN -> {
                                         SplashScreen(
                                             onNavigateToHome = {
+                                                // Trigger App Open Ad upon splash transition
+                                                AdManager.showAppOpenAdIfAvailable(this@MainActivity)
                                                 viewModel.navigateTo(ScreenType.HOME_SCREEN)
                                             }
                                         )
@@ -175,11 +191,15 @@ class MainActivity : ComponentActivity() {
                                             viewModel = viewModel,
                                             gameState = uiState,
                                             onResetHome = {
-                                                viewModel.navigateTo(ScreenType.HOME_SCREEN)
+                                                AdManager.showInterstitial(this@MainActivity) {
+                                                    viewModel.navigateTo(ScreenType.HOME_SCREEN)
+                                                }
                                             },
                                             onNextLevel = {
-                                                val next = uiState.currentLevelNumber + 1
-                                                viewModel.loadLevel(next)
+                                                AdManager.showInterstitial(this@MainActivity) {
+                                                    val next = uiState.currentLevelNumber + 1
+                                                    viewModel.loadLevel(next)
+                                                }
                                             }
                                         )
                                     }
@@ -194,7 +214,15 @@ class MainActivity : ComponentActivity() {
                                     gameState = uiState,
                                     languageCode = languageCode,
                                     onRestored = {
-                                        viewModel.claimAdForFullLives()
+                                        AdManager.showRewardedAd(
+                                            activity = this@MainActivity,
+                                            onUserEarnedReward = {
+                                                viewModel.claimAdForFullLives()
+                                            },
+                                            onAdClosed = {
+                                                viewModel.closeAdOffer()
+                                            }
+                                        )
                                     },
                                     onBuyWithCoins = {
                                         viewModel.purchaseStoreItemByPoints("lives", 40)
