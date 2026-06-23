@@ -19,9 +19,8 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 object AdManager {
     private const val TAG = "AdManager"
 
-    // Set this to true to prevent full-screen ads from automatically opening and blocking inputs in the browser's emulator.
-    // When you are ready to publish, set this to false to enable full production ads.
-    var devBypassFullScreenAds = true
+    // Set this to false to enable full-screen ads on real devices.
+    var devBypassFullScreenAds = false
 
     // Google AdMob Test Ad Unit IDs provided by the user
     private const val APP_OPEN_AD_ID = "ca-app-pub-3940256099942544/9257395921"
